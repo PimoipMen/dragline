@@ -1,0 +1,303 @@
+{% include 'front/header.html' %}
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	
+	body {
+		background: #fff;
+	}
+	
+	.shop-wrap {
+		width: 7.5rem;
+		margin: 0 auto;
+		overflow: hidden;
+	}
+	
+	.shop-list-con {
+		padding: 0.21rem 0.38rem;
+		display: flex;
+		border-bottom: 1px solid rgba(156, 156, 156, 0.43);
+		position: relative;
+		background: #fff;
+	}
+	
+	.shop-list-con img {
+		width: 1.94rem;
+		height: 1.4rem;
+		margin-right: 0.38rem;
+		margin-top: 0.1rem;
+	}
+	#shop-text{
+		position: relative;
+	}
+	#shop-text>p:nth-child(1) {
+		margin-top: 0.15rem;
+		font-size: 0.22rem;
+		color: #333;
+		margin-bottom: 0;
+		line-height: 0.30rem;
+	}
+	
+	#shop-text>p:nth-child(2) {
+		margin-top: 0.1rem;
+		font-size: 0.24rem;
+		color: #da020c;
+		margin-bottom: 0;
+	}
+	
+	.text-ellipsis-3 {
+		display: -webkit-box;
+		overflow: hidden;
+		white-space: normal!important;
+		text-overflow: ellipsis;
+		word-wrap: break-word;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
+	
+	.shop-list {
+		/*margin-bottom: 1rem;*/
+		/*padding-bottom: 1rem;*/
+	}
+	
+	.shop-button {
+		font-size: 0.22rem;
+		width: 1.1rem;
+		height: 0.44rem;
+		line-height: 0.44rem;
+		text-align: center;
+		background: #f96e31;
+		border-radius: 0.05rem;
+		position: absolute;
+		right: 0.3rem;
+		bottom: 0.25rem;
+		color: #fff;
+	}
+	
+	.shop-look-button {
+		width: 7.5rem;
+		position: fixed;
+		bottom: 0;
+		background: #41b4ad;
+		font-size: 0.36rem;
+		color: #fff;
+		height: 1rem;
+		line-height: 1rem;
+		text-align: center;
+	}
+	
+	.shop-list-img {
+		height: 1.4rem;
+		width: 1.94rem;
+	}
+	
+	.mui-pull {
+		font-weight: 100 !important;
+	}
+	
+	.shopList {
+		overflow: hidden;
+		width: 100%;
+		background: #fff;
+		position: absolute;
+    top: 0;
+    bottom: 1rem;
+	}
+	
+	* {
+		touch-action: none;
+	}
+	.money{
+		position: absolute;
+		bottom: 0;
+	}
+</style>
+</head>
+
+<body>
+	<div class="shop-wrap">
+		<div class="shopList" id="shopList">
+			<div class="shop-list">
+				<div id="shop-item">
+					<!--<div class="shop-list-con">
+						<div><img src="/resource/front/img/list1.jpg" /></div>
+						<div id="shop-text">
+							<p class="text-ellipsis-3">价值SD卡还是快点哈老师看到哈安康市大理石的看见了爱上大垃圾开始懂了看见啊按价值SD卡还是快点哈老师看到哈安康市大理石的看见了爱上大垃圾开始懂了看见啊按时打卡了华盛顿卡价值SD卡还是快点哈老师看到哈安康市大理石的看见了爱上大垃圾开始懂了看见啊按时打卡了华盛顿卡时打卡了华盛顿卡</p>
+							<p>78944 LCB</p>
+						</div>
+						<div class="shop-button">查看详情</div>
+					</div>
+					<div class="shop-list-con">
+						<div><img src="/resource/front/img/list1.jpg" /></div>
+						<div id="shop-text">
+							<p class="text-ellipsis-3">价值SD卡还是快点哈老师看到哈安康市</p>
+							<p class="money">78944 LCB</p>
+						</div>
+						<div class="shop-button">查看详情</div>
+					</div>-->
+				</div>
+
+			</div>
+		</div>
+
+		<div class="shop-look-button">
+			查看订单
+		</div>
+
+	</div>
+</body>
+
+</html>
+{% include 'front/foot.html' %}
+<script type="text/javascript" src="/resource/front/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript">
+	var local = window.location.href;
+	util.setLocalStorage('search',window.location.search);
+	var isIos = false;
+	if(local.indexOf('&ios') > 0) {
+		isIos = true;
+		local = local.split('&ios')[0];
+	}
+	var suiyi1 = local.split('suiyi1=')[1];
+	suiyi1 = suiyi1.split('&suiyi2=')[0]; //token
+	var suiyi2 = local.split('&suiyi2=')[1];
+	suiyi2 = suiyi2.split('&suiyi3')[0]; //uid
+	var suiyi3 = local.split('&suiyi3=')[1]; //ucode
+	defineClass('init', {
+		init: function() {
+			var it = this;
+			it.initHeight();
+			it.loadmore();
+			it.pageList = {
+				page: 1
+			}
+			it.params = "";
+			it.initParams();
+			it.getContent(true);
+			$('.shop-look-button').click(function() {
+				window.location.href = "/home/myorder?data=2";
+			})
+		},
+		initParams: function() {
+			//			console.log(suiyi3)
+			util.setLocalStorage('uid', suiyi3);
+			this.params = suiyi3;
+		},
+
+		initHeight: function() {
+			var screenHeight = window.screen.height;
+			var shopListHeight = screenHeight - $('.shop-look-button').height();
+			// - 30
+			$('#shop-item').css('min-height', shopListHeight + 'px');
+			$('#shopList').css('max-height', shopListHeight + 'px');
+		},
+		loadmore: function() {
+			var it = this;
+			
+			mui.init({
+				pullRefresh: {
+					container: '#shopList',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			//下拉加载
+			function pulldownRefresh() {
+				it.pageList.page = 1;
+				it.getContent(true);
+			}
+			//上拉刷新
+			function pullupRefresh() {
+				it.pageList.page++;
+				it.getContent(false);
+			}
+		},
+		getContent: function(status) {
+			var it = this;
+			util.doAjax({
+				url: "/goodsList",
+				method: "get",
+				data: {
+					user_code: this.params,
+					page: this.pageList.page
+				},
+				success: function(res) {
+					util.setLocalStorage('user_id', res.user_id);
+					util.setLocalStorage('eara', res.esrn);
+					it.showEl(res.obj, status);
+					var shareTitle = '告诉你个买东西不花钱的办法';
+                    var shareContent = '进入“龙采校园app”可以再主界面上看到很多功能，其中有一项"钱道"就是我们广告信息界面，用户们可在"钱道"浏览分享任意信息，分享到各个平台就可赢得收益（微信、朋友圈、微博、QQ、QQ空间等其它平台）。在你平时吃饭、坐车、上厕所这些时间都可以浏览点击分享得收益，在外面龙采商城上购买商品...';
+                    var shareImg = 'https://test123.52qingqiyun.com/static/weshare/img/toupiao_share_logo.png';
+                    var shareUrl = 'http://shop.longcaixiaoyuan.com/home/download';
+                    var isShare = 1;
+                    if(isIos){
+                        shareActivity(shareTitle,shareContent,shareImg,shareUrl,isShare);//传给ios端的方法
+                    }else{
+                        window.android.shareActivity(shareTitle,shareContent,shareImg,shareUrl,isShare);//传给android端的方法
+                    }
+				}
+			});
+		},
+		//生成节点
+		showEl: function(data, status) {
+			var that = this;
+			
+			setTimeout(function() {
+				if(status) {
+					mui('#shopList').pullRefresh().endPulldownToRefresh();
+				} else {
+					mui('#shopList').pullRefresh().endPullupToRefresh();
+					
+				}
+			}, 1000)
+			if(data.length == 0){
+				mui.toast("暂无数据");
+				return false;
+			}
+			var el = "";
+			for(var i = 0; i < data.length; i++) {
+				el += `<div class="shop-list-con" data-id="${data[i].id}">
+						<div class="img"><img class="lazy" data-original="${data[i].image}" /></div>
+						<div id="shop-text" class="shop-text">
+							<p class="text-ellipsis-3">${data[i].name}</p>
+							<p class="money">${data[i].price} LCB</p>
+						</div>
+						<div class="shop-button">查看详情</div>
+					</div>`;
+			}
+			status ? $("#shop-item").html(el) : $("#shop-item").append(el);
+
+			$("img.lazy").lazyload({
+				effect: "fadeIn"
+			});
+
+			this.seeInfo(); //查看详情
+
+		},
+		seeInfo: function() {
+			mui("#shop-item").on("tap", ".shop-button", function() {
+				// 逻辑代码，例如跳转详情页、ajax
+				var id = $(this).parent().data('id');
+				window.location.href = '/home/dateils?shopid=' + id;
+			});
+			mui("#shop-item").on("tap", ".img", function() {
+				// 逻辑代码，例如跳转详情页、ajax
+				var id = $(this).parent().data('id');
+				window.location.href = '/home/dateils?shopid=' + id;
+			});
+			mui("#shop-item").on("tap", ".shop-text", function() {
+				// 逻辑代码，例如跳转详情页、ajax
+				var id = $(this).parent().data('id');
+				window.location.href = '/home/dateils?shopid=' + id;
+			});
+		}
+
+	})
+</script>

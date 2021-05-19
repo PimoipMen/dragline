@@ -1,0 +1,97 @@
+* {
+	font-family: '微软雅黑', 黑体;
+}
+
+#onProcess {
+	padding: 10px;
+	border-radius: 10px;
+	z-index: 1100;
+	/* display: flex; */
+	/* top: 0; */
+	background: #eee;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.note-success {
+	background: rgba(0, 0, 0, .2);
+	text-align: center;
+	padding: 10px;
+}
+
+#onProcess img {
+	width: 18px;
+	height: 18px;
+	animation: run 1s linear infinite;
+}
+
+@-webkit-keyframes run {
+	0% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(180deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+body {
+	background: #eee !important;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+.mui-popup {
+	border-radius: 0;
+}
+
+.mui-popup-inner {
+	border-radius: 0;
+	padding-top: .66rem;
+	padding-bottom: .87rem;
+}
+
+.mui-popup-button {
+	border-radius: 0;
+}
+
+.mui-popup-button:last-child {
+	border-radius: 0;
+}
+
+.mui-popup-button:first-child {
+	border-radius: 0;
+}
+
+.mui-popup-button {
+	color: #333;
+	font-size: .26rem;
+}
+
+.mui-popup-button:after,
+.mui-popup-inner:after {
+	background: transparent;
+}
+
+.mui-popup-title {
+	font-size: .28rem;
+}
+
+.mui-popup-button-bold {
+	color: #F84247;
+}

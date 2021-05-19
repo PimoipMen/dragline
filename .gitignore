@@ -1,0 +1,6 @@
+.idea
+*.log
+application/config/database.php
+application/cache
+
+
