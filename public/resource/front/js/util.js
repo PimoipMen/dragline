@@ -8,7 +8,7 @@ var util = {
 	/**
 	 * 私有构造函数   
 	 */
-	api_url: 'http://news.isxuan.com/api',
+	api_url: 'http://news.isxuan.com',
 	__construct: function() {
 		var it = this;
 	},
@@ -83,6 +83,73 @@ var util = {
 		}
 		return hdate;
 	},
+	formatDate: function(date, fmt) {
+		var o = {
+			"M+": date.getMonth() + 1, //月份
+			"d+": date.getDate(), //日
+			"h+": date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, //小时
+			"H+": date.getHours(), //小时
+			"m+": date.getMinutes(), //分
+			"s+": date.getSeconds(), //秒
+			"q+": Math.floor((date.getMonth() + 3) / 3), //季度
+			"S+": date.getMilliseconds() //毫秒
+		};
+		var week = {
+			"0": "日",
+			"1": "一",
+			"2": "二",
+			"3": "三",
+			"4": "四",
+			"5": "五",
+			"6": "六"
+		};
+		if(/(y+)/.test(fmt)) {
+			fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+		}
+		if(/(E+)/.test(fmt)) {
+			fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "星期" : "周") : "") + week[date.getDay() + ""]);
+		}
+		for(var k in o) {
+			if(new RegExp("(" + k + ")").test(fmt)) {
+				fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			}
+		}
+		return fmt;
+	},
+	getDateDiff: function(dateTimeStamp) {
+		dateTimeStamp = parseInt(new Date(dateTimeStamp)/1000);
+		var minute = 1000 * 60;
+		var hour = minute * 60;
+		var day = hour * 24;
+		var halfamonth = day * 15;
+		var month = day * 30;
+		var now = new Date().getTime();
+		var diffValue = now - dateTimeStamp;
+		if(diffValue < 0) {
+			return;
+		}
+		var result = ""
+		var monthC = diffValue / month;
+		var weekC = diffValue / (7 * day);
+		var dayC = diffValue / day;
+		var hourC = diffValue / hour;
+		var minC = diffValue / minute;
+		if(monthC > 11){
+			result = util.getNowTime(dateTimeStamp);
+		}else if(monthC >= 1) {
+			result = "" + parseInt(monthC) + "月前";
+		} else if(weekC >= 1) {
+			result = "" + parseInt(weekC) + "周前";
+		} else if(dayC >= 1) {
+			result = "" + parseInt(dayC) + "天前";
+		} else if(hourC >= 1) {
+			result = "" + parseInt(hourC) + "小时前";
+		} else if(minC >= 1) {
+			result = "" + parseInt(minC) + "分钟前";
+		} else
+			result = "刚刚";
+		return result;
+	},
 
 	doAjax: function(option) {
 		var it = this;
@@ -106,11 +173,11 @@ var util = {
 
 		var defaultOptions = {
 			url: "",
-//			beforeSend: Fun,
+			//			beforeSend: Fun,
 			showBlock: true,
 			timeout: 600000,
 			dataType: 'json',
-			method: "post",
+			method: option.method || 'post',
 			async: true,
 			success: function(res) {
 				var doSuccess = function() {
@@ -166,7 +233,7 @@ var util = {
 		ajaxOption.data = option.data || defaultOptions.data || {};
 		ajaxOption.success = defaultOptions.success;
 
-		//		ajaxOption.data['token'] = $.md5(ajaxOption.url.slice(-10))+$.md5('qqy').slice(-7);
+		ajaxOption.data['token'] = util.getLocalStorage('token');
 		ajaxOption.error = defaultOptions.error;
 		ajaxOption.complete = defaultOptions.complete;
 		var tajax = $.ajax(ajaxOption);
@@ -268,6 +335,18 @@ var util = {
 			paraObj[key] = value;
 		}
 		return paraObj;
+	},
+	GetRequest: function() {
+		var url = location.search; //获取url中"?"符后的字串  
+		var theRequest = new Object();
+		if(url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			strs = str.split("&");
+			for(var i = 0; i < strs.length; i++) {
+				theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+			}
+		}
+		return theRequest;
 	},
 
 	/**
@@ -627,8 +706,8 @@ var util = {
 			idCard: [/\d{15}|\d{18}/, "请填写正确的身份证"], //身份证
 			// idCard: [/\d+\.\d+\.\d+\.\d+ /, "请填写正确的ip"], //ip地址
 			mzero: [/^[1-9]\d*(\.\d+)?$/, "请输入大于零的数"], //大于零包含小数
-			yzCode:[/^\d{6}$/,"请输入6位数字验证码"],
-			
+			yzCode: [/^\d{6}$/, "请输入6位数字验证码"],
+
 		};
 		$(params.el).find('input,select,textarea').each(function() {
 			if($(this).attr('field')) {
@@ -641,19 +720,19 @@ var util = {
 					mui.toast($(this).attr('errmsg') ? $(this).attr('errmsg') : "请输入" + $(this).prev().text());
 					return false;
 				} else {
-					if($(this).attr('data-type') && verifyArr[$(this).attr('data-type')][0]){
-						if( verifyArr[$(this).attr('data-type')][0] && !verifyArr[$(this).attr('data-type')][0].test($(this).val())){
+					if($(this).attr('data-type') && verifyArr[$(this).attr('data-type')][0]) {
+						if(verifyArr[$(this).attr('data-type')][0] && !verifyArr[$(this).attr('data-type')][0].test($(this).val())) {
 							mui.toast($(this).attr('errmsg') ? $(this).attr('errmsg') : "请输入" + $(this).prev().text());
 							return false;
-						}else {
+						} else {
 							count++;
 							obj[$(this).attr('field')] = $(this).val();
 						}
-					}else{
+					} else {
 						count++;
 						obj[$(this).attr('field')] = $(this).val();
 					}
-					
+
 				}
 			} else if($(this).attr('field')) {
 				count++;
@@ -769,21 +848,21 @@ var util = {
 		var cityResult3 = $('#userResult');
 		showCityPickerButton.addEventListener('tap', function(event) {
 			cityPicker.show(function(items) {
-				if(typeof option.success == 'function'){
+				if(typeof option.success == 'function') {
 					option.success(items);
 					return false;
 				}
 				var str = "";
 				var strVal = "";
-				if(option.layer <= 1){
+				if(option.layer <= 1) {
 					str += items[0].text;
 					strVal += items[0].value;
 				}
-				if(option.layer <= 2){
+				if(option.layer <= 2) {
 					str += items[1].text;
 					strVal += items[1].value;
 				}
-				if(option.layer <= 3){
+				if(option.layer <= 3) {
 					str += items[2].text;
 					strVal += items[2].value;
 				}
@@ -791,26 +870,26 @@ var util = {
 
 			});
 		}, false);
-		
+
 	},
-	
-	scrollHearder:function(option){
+
+	scrollHearder: function(option) {
 		var obj = {
-			top:0,
-			scrollTop:0,
-			time:null
+			top: 0,
+			scrollTop: 0,
+			time: null
 		}
-		$(option.el || '.mui-bar-nav').css('transition','.3s ease-in-out');
-		$(window).scroll(function(){
+		$(option.el || '.mui-bar-nav').css('transition', '.3s ease-in-out');
+		$(window).scroll(function() {
 			var top = $(option.el || '.mui-bar-nav').css('top');
-			if( window.scrollY > obj.scrollTop){
-				if(obj.top != '-44px'){
-					$(option.el || '.mui-bar-nav').css('top','-44px');
+			if(window.scrollY > obj.scrollTop) {
+				if(obj.top != '-44px') {
+					$(option.el || '.mui-bar-nav').css('top', '-44px');
 					obj.top = '-44px';
 				}
-			}else{
-				if(obj.top == '-44px'){
-					$( option.el ||'.mui-bar-nav').css('top','0px');
+			} else {
+				if(obj.top == '-44px') {
+					$(option.el || '.mui-bar-nav').css('top', '0px');
 					obj.top = '0px';
 				}
 			}

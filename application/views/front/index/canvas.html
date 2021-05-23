@@ -1,0 +1,237 @@
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>龙采头条</title>
+		<link rel="stylesheet" href="/resource/front/css/mui.min.css" />
+		<link rel="stylesheet" href="/resource/front/css/base.css" />
+		
+		<div class="dataTables_processing" id="onProcess" style="z-index:5001;">
+		<div class="note-success" style="padding: 14px 15px;border-radius: 10px;display: flex;align-items: center;">
+			<img style="top:-1px;display: inline-block; position:relative" src="/resource/front/img/load.png" class="rotate"><span style="font-size:14px;"></span></div>
+		</div>
+		<script>
+			document.getElementById('onProcess').style.display = "flex"
+		</script>
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	
+	body {
+		background: #fff;
+	}
+	
+	.shop-wrap {
+		width: 7.5rem;
+		margin: 0 auto;
+		overflow: hidden;
+	}
+	
+	.shop-list-con {
+		padding: 0.21rem 0.38rem;
+		display: flex;
+		border-bottom: 1px solid rgba(156, 156, 156, 0.43);
+		position: relative;
+		background: #fff;
+	}
+	
+	.shop-list-con img {
+		width: 1.94rem;
+		height: 1.4rem;
+		margin-right: 0.38rem;
+		margin-top: 0.1rem;
+	}
+	
+	#shop-text {
+		position: relative;
+	}
+	
+	#shop-text>p:nth-child(1) {
+		margin-top: 0.15rem;
+		font-size: 0.22rem;
+		color: #333;
+		margin-bottom: 0;
+		line-height: 0.30rem;
+	}
+	
+	#shop-text>p:nth-child(2) {
+		margin-top: 0.1rem;
+		font-size: 0.24rem;
+		color: #da020c;
+		margin-bottom: 0;
+	}
+	
+	.text-ellipsis-3 {
+		display: -webkit-box;
+		overflow: hidden;
+		white-space: normal!important;
+		text-overflow: ellipsis;
+		word-wrap: break-word;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
+	
+	.shop-list {
+		/*margin-bottom: 1rem;*/
+		/*padding-bottom: 1rem;*/
+	}
+	
+	.shop-button {
+		font-size: 0.22rem;
+		width: 1.1rem;
+		height: 0.44rem;
+		line-height: 0.44rem;
+		text-align: center;
+		background: #f96e31;
+		border-radius: 0.05rem;
+		position: absolute;
+		right: 0.3rem;
+		bottom: 0.25rem;
+		color: #fff;
+	}
+	
+	.shop-look-button {
+		width: 7.5rem;
+		position: fixed;
+		bottom: 0;
+		background: #41b4ad;
+		font-size: 0.36rem;
+		color: #fff;
+		height: 1rem;
+		line-height: 1rem;
+		text-align: center;
+	}
+	
+	.shop-list-img {
+		height: 1.4rem;
+		width: 1.94rem;
+	}
+	
+	.mui-pull {
+		font-weight: 100 !important;
+	}
+	
+	.shopList {
+		overflow: hidden;
+		width: 100%;
+		background: #fff;
+		position: absolute;
+		top: 0;
+		bottom: 1rem;
+	}
+	
+	* {
+		touch-action: none;
+	}
+	
+	.money {
+		position: absolute;
+		bottom: 0;
+	}
+</style>
+</head>
+
+<body>
+	<div class="shop-wrap">
+		<canvas id="yuan"></canvas>
+
+	</div>
+</body>
+
+</html>
+<script type="text/javascript" src="/resource/front/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/front/js/screen.js"></script>
+<script type="text/javascript" src="/resource/front/js/mui.min.js"></script>
+<script type="text/javascript" src="/resource/front/js/util.js"></script><script type="text/javascript" src="/resource/front/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript">
+	defineClass('init', {
+		init: function() {
+			var it = this;
+			it.InitCanvas(10,50);
+
+		},
+
+		InitCanvas: function(value, average) {
+				var canvas = document.getElementById("yuan");
+				var context = canvas.getContext('2d');
+				var _this = $(canvas),
+					value = Number(value), // 当前百分比,数值
+					average = Number(average), // 平均百分比
+					color = "", // 进度条、文字样式
+					maxpercent = 100, //最大百分比，可设置
+					c_width = _this.width(), // canvas，宽度
+					c_height = _this.height(); // canvas,高度
+				// 判断设置当前显示颜色
+				if(value == maxpercent) {
+					color = "#29c9ad";
+				} else if(value > average) {
+					color = "#27b5ff";
+				} else {
+					color = "#ff6100";
+				}
+				// 清空画布
+				context.clearRect(0, 0, c_width, c_height);
+				// 画初始圆
+				context.beginPath();
+				// 将起始点移到canvas中心
+				context.moveTo(c_width / 2, c_height / 2);
+				// 绘制一个中心点为（c_width/2, c_height/2），半径为c_height/2，起始点0，终止点为Math.PI * 2的 整圆
+				context.arc(c_width / 2, c_height / 2, c_height / 2, 0, Math.PI * 2, false);
+				context.closePath();
+				context.fillStyle = '#ddd'; //填充颜色
+				context.fill();
+				// 绘制内圆
+				context.beginPath();
+				context.strokeStyle = color;
+				context.lineCap = 'square';
+				context.closePath();
+				context.fill();
+				context.lineWidth = 10.0; //绘制内圆的线宽度
+
+				function draw(cur) {
+					// 画内部空白  
+					context.beginPath();
+					context.moveTo(24, 24);
+					context.arc(c_width / 2, c_height / 2, c_height / 2 - 10, 0, Math.PI * 2, true);
+					context.closePath();
+					context.fillStyle = 'rgba(255,255,255,1)'; // 填充内部颜色
+					context.fill();
+					// 画内圆
+					context.beginPath();
+					// 绘制一个中心点为（c_width/2, c_height/2），半径为c_height/2-5不与外圆重叠，
+					// 起始点-(Math.PI/2)，终止点为((Math.PI*2)*cur)-Math.PI/2的 整圆cur为每一次绘制的距离
+					context.arc(c_width / 2, c_height / 2, c_height / 2 - 5, -(Math.PI / 2), ((Math.PI * 2) * cur / 30) - Math.PI / 2, false);
+					context.stroke();
+				
+					
+					//在中间写字  
+					context.font = "bold 18pt Arial"; // 字体大小，样式
+					context.fillStyle = color; // 颜色
+					context.textAlign = 'center'; // 位置
+					context.textBaseline = 'middle';
+					context.moveTo(c_width / 2, c_height / 2); // 文字填充位置
+					context.fillText(value + "%", c_width / 2, c_height / 2 - 20);
+					context.fillText("正确率", c_width / 2, c_height / 2 + 20);
+				}
+				// 调用定时器实现动态效果
+				var timer = null,
+					n = 0,time = 0;
+			
+				function loadCanvas() {
+					timer = setInterval(function() {
+						if(n > 30) {
+							clearInterval(timer);
+						} else {
+							draw(n);
+							n += 1;
+						}
+					}, 1000);
+				}
+				loadCanvas();
+				timer = null;
+			}
+	})
+</script>

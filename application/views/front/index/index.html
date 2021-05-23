@@ -1,27 +1,32 @@
 {% include 'front/header.html' %}
- <link rel="stylesheet" href="/resource/front/css/news.css">
+<link rel="stylesheet" href="/resource/front/css/news.css">
 </head>
 
 <body>
+
+		
+	
 	<div class="news-wrap">
-		<main>
-			<div id="content">
+		<main id="content" >
+			<div style="">
 				<div class="con-news">
-					<div class="news-title">西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</div>
+					<div class="news-title" detail="title"></div>
 					<div class="news-views">
-						<div><span>阅读</span><span>99999+</span></div>
-						<div><span>来源于</span><span>人人网</span><span>2小时前</span></div>
+						<div><span>阅读</span><span detail="reading"></span></div>
+						<div><span>来源于</span><span detail="source"></span><span detail="create_time"></span></div>
 					</div>
-					<img src="/resource/front/img/icon_share.png" alt="" class="news-img">
+					<!--<img src="/resource/front/img/icon_share.png" alt="" class="news-img">-->
 				</div>
 				<div class="con-bottom-con">
-					<span>咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开咕咕公开结果公开</span>
+					<span detail="content">
+						
+					</span>
 					<div class="news-ju">
-						<div>
+						<div class="review-zan-info">
 							<img src="/resource/front/img/赞.png" alt="" class="news-zan">
-							<div>21</div>
+							<div detail="groom"></div>
 						</div>
-						<div>
+						<div class="infojub">
 							<img src="/resource/front/img/铃铛.png" alt="" class="news-jubao">
 							<div>举报</div>
 						</div>
@@ -36,27 +41,44 @@
 				</div>
 
 				<div class="con-back-ccc">
+					<!--<span>西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</span>
 					<span>西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</span>
-					<span>西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</span>
-					<span>西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</span>
+					<span>西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</span>-->
 				</div>
 				<div class="con-list-wrap">
 					<span class="con-list-title">相关评论</span>
 					<!-- 评论 -->
-					<div class="review-wrap">
-						<div class="review-left"> <img src="/resource/front/img/笑脸(2).png" alt="" class="review-icon"></div>
-						<div class="review-right">
-							<div class="review-name-wrap">
-								<div>爱笑会议室</div>
-								<div><span class="review-zan"><img src="/resource/front/img/赞.png" alt=""></span><span>21</span></div>
-							</div>
-							<div class="review-con">西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜，西班牙必胜 ，西班牙必胜西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜
-							</div>
-							<div class="review-time-wrap">
-								<div>05-4 10：31</div>
-								<div><span>举报</span></div>
+					<div class="feed-back">
+						<!--<div class="review-wrap">
+							<div class="review-left"> <img src="/resource/front/img/笑脸(2).png" alt="" class="review-icon"></div>
+							<div class="review-right">
+								<div class="review-name-wrap">
+									<div>爱笑会议室</div>
+									<div><span class="review-zan"><img src="/resource/front/img/赞.png" alt=""></span><span detail="groom">21</span></div>
+								</div>
+								<div class="review-con">西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜，西班牙必胜 ，西班牙必胜西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜
+								</div>
+								<div class="review-time-wrap">
+									<div>05-4 10：31</div>
+									<div><span>举报</span></div>
+								</div>
 							</div>
 						</div>
+						<div class="review-wrap">
+							<div class="review-left"> <img src="/resource/front/img/笑脸(2).png" alt="" class="review-icon"></div>
+							<div class="review-right">
+								<div class="review-name-wrap">
+									<div>爱笑会议室</div>
+									<div><span class="review-zan"><img src="/resource/front/img/赞.png" alt=""></span><span detail="groom">21</span></div>
+								</div>
+								<div class="review-con">西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜，西班牙必胜 ，西班牙必胜西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜
+								</div>
+								<div class="review-time-wrap">
+									<div>05-4 10：31</div>
+									<div><span>举报</span></div>
+								</div>
+							</div>
+						</div>-->
 					</div>
 					<!-- 评论 -->
 				</div>
@@ -67,12 +89,19 @@
 			<div class="input-wrap">
 				<img src="/resource/front/img/写评论.png" alt="">
 				<input type="text" placeholder="写评论" id="ipt">
+				<div class="send">发布</div>
 			</div>
 			<span><img src="/resource/front/img/评论(1).png" alt="" class="plsl"></span>
-			<span class="plnub">1899</span>
+			<span class="plnub" detail="comment"></span>
 			<span><img src="/resource/front/img/icon_share.png" alt="" class="share-b"></span>
 		</footer>
-
+	<div class="canvas">
+		<!--class="canvas-con"-->
+		<div class="canvas-box" style="width: 80px; height: 80px; right: 0;">
+			<canvas width="80" height="80" id="yuan"></canvas>
+		</div>
+		
+	</div>
 	</div>
 </body>
 
@@ -84,7 +113,376 @@
 	defineClass('init', {
 		init: function() {
 			var it = this;
-		}
+			it.params = util.GetRequest(); //获取传参
+			util.setLocalStorage('token', it.params.token)
+			it.pageList = {
+				page: 1,
+				limit: 10
+			}
+			it.loadmore(); //初始化上拉加载
+			it.initInfo(); //获取详情
+			it.feedbakeList(); //获取评论列表
+			it.InitCanvas();
+			it.content = {};
+		},
+		InitCanvas: function() {
+			var that = this;
+			//			if(!that.time == 30){
+			//				$('.canvas').remove();
+			//				return false;
+			//			}
+			var canvas = document.getElementById('yuan');
+			var content = canvas.getContext("2d");
+			var centerX = canvas.width / 2; //X 轴中心点
+			var centerY = canvas.height / 2; //Y 轴中心点
+			var img = new Image();
+			var timer = null,
+				n = 0,
+				time = 0;
+			img.onload = function() {
+				//				content.clearRect(0, 0, canvas.width, canvas.height);
+			}
+			var n = 0;
+			img.src = "/resource/front/img/red.png";
+			(function drawFrame() {
+				drawWhiteCircle();
+				content.drawImage(img, 28, 24, 24, 32);
+				drawBlueCircle(n);
+
+				function loadCanvas() {
+					timer = setInterval(function() {
+						if(n > 30) {
+							clearInterval(timer);
+						} else {
+							that.addmoney(n); //加币
+							drawWhiteCircle();
+							content.drawImage(img, 28, 24, 24, 32);
+							drawBlueCircle(n);
+							n += 1;
+						}
+					}, 1000);
+				}
+				loadCanvas();
+			})()
+
+			function drawBlueCircle(n) {
+				content.save();
+				var gr = content.createRadialGradient(50, 50, 50, 100, 100, 100);
+				//添加颜色端点
+				gr.addColorStop(0, 'rgb(255,0,0)');
+				gr.addColorStop(.5, 'rgb(0,255,0)');
+				gr.addColorStop(1, 'rgb(255,0,0)');
+				//				content.strokeStyle = gr; //设置描边样式
+				content.strokeStyle = "#ff3636";
+				content.lineWidth = 5; //设置线宽
+				content.beginPath(); //路径开始
+				content.arc(centerX, centerY, 25, -Math.PI / 2, ((Math.PI * 2) * n / 30) - Math.PI / 2, false); //用于绘制圆弧content.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+				//				context.arc(c_width / 2, c_height / 2, c_height / 2 - 5, -(Math.PI / 2), ((Math.PI * 2) * cur / 30) - Math.PI / 2, false);
+				content.stroke(); //绘制
+				content.closePath(); //路径结束
+				content.restore();
+			}
+			//绘制白色外圈
+			function drawWhiteCircle() {
+				content.save();
+				content.beginPath();
+				content.lineWidth = 5; //设置线宽
+				content.strokeStyle = "#ffdfdf";
+				content.arc(centerX, centerY, 25, 0, Math.PI * 2, false);
+				content.stroke();
+				content.closePath();
+				content.restore();
+			}
+			//百分比文字绘制
+			function drawText(n) {
+				img = new Image();
+
+				img.onload = function() {
+					content.drawImage(img, 0, 0);
+				}
+				img.src = "/resource/front/img/红包(1).png";
+			}
+		},
+		initInfo: function() {
+			var that = this;
+			util.doAjax({
+				url: "/api/Newsdetail/detail",
+				method: "get",
+				data: {
+					news_id: that.params.news_id
+				},
+				success: function(res) {
+					that.getContent(res.data);
+					that.content = res.data;
+					that.news_rand();
+				}
+			});
+		},
+		news_rand:function(){
+			var that = this;
+			util.doAjax({
+				url: "/api/Newsdetail/news_rand",
+				method: "get",
+				data: {
+					cid: that.content.cid
+				},
+				success: function(res) {
+					var data = res.data;
+					var content = "";
+					for(var i in data){
+						content += `<span data-id="${data[i]['id']}" data-cid="${data[i]['cid']}">${data[i]['title']}</span>`;
+					}
+					
+					$('.con-back-ccc').html(content);
+				}
+			});
+		},
+		loadmore: function() {
+			var it = this;
+			
+			mui.init({
+				pullRefresh: {
+					container: '#content',
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			//上拉刷新
+			function pullupRefresh() {
+				it.feedbakeList(); //初始化评论详情
+			}
+		},
+		getContent: function(content) {
+			var that = this;
+			var detail = "";
+			$('.news-wrap').find('[detail]').each(function() {
+				detail = $(this).attr('detail');
+				if(detail == 'create_time') {
+					$(this).text(util.getDateDiff(content[detail]))
+				} else if(detail == 'content') {
+					$(this).html(content[detail])
+				} else {
+					$(this).text(content[detail])
+				}
+			})
+			
+			$('.news-zan').attr('src',that.isZan(content.user))
+			that.feedbake();
+			mui("#content").on("tap", ".infojub", function() {
+				that.clickFeedback({
+					news_id: that.params.news_id,
+					type: 1,
+				})
+			});
+			mui("#content").on("tap", ".review-zan-info", function() {
+				var src = $(this).find('img').attr('src');
+				that.clickZan({
+					news_id: that.params.news_id,
+					type: 1,
+					src:src,
+					el:$(this).find('img')
+				})
+			});
+		},
+		clickFeedback: function(option) { //文章 和 评论 举报
+			var that = this;
+			if(!that.isLogin()) {
+				return false;
+			}
+			util.doAjax({
+				url: "/api/Newsdetail/feedback",
+				method: "get",
+				data: {
+					news_id: option.news_id,
+					type: option.type || 1
+				},
+				success: function(res) {
+					res.status == 'success' ? mui.toast("举报成功") : mui.toast("举报失败")
+
+				}
+			});
+		},
+		clickZan:function(option){  //文章 和 评论点赞  
+			var that = this;
+			var status = option.src == "/resource/front/img/赞.png" ? 1 : 0;
+			var data = {
+				user_id:that.params.uid,
+				type: option.type || 1,
+				status:status
+			};
+			option.type == 1 ? data.news_id = option.news_id : data.comment_id = option.news_id;
+			util.doAjax({
+				url: "/api/Newsdetail/groom",
+				method: "post",
+				data: data,
+				success: function(res) {
+					if(res.status == 'success'){
+						//切换图标
+						$(option.el).attr("src",that.showZanImg(status == 0 ? 2 : 1));
+						$(option.el).next().text(res.data);
+					}
+				}
+			});
+		},
+		
+		feedbakeList: function(page) { //评论列表
+
+			var that = this;
+			util.doAjax({
+				url: "/api/Newsdetail/comment",
+				method: "get",
+				data: {
+					news_id: that.params.news_id,
+					page: page ? page : that.pageList.page,
+					limit: that.pageList.limit
+				},
+				success: function(res) {
+					//刷新评论数量大于0时    page加1
+					if(res.data.data.length == 0) {
+						mui.toast("已显示全部内容");
+						setTimeout(function() {
+							mui('#content').pullRefresh().endPullupToRefresh();
+						}, 1000)
+						return false;
+					}
+					that.showList(res.data.data);
+					that.pageList.page = res.data.current_page + 1;
+				}
+			});
+		},
+		showList: function(content) {
+			var that = this;
+			var html = "";
+			for(var i in content) {
+				html += `<div class="review-wrap" data-id="${content[i].id}">
+							<div class="review-left"> <img src="${content[i].image}" alt="" class="review-icon"></div>
+							<div class="review-right">
+								<div class="review-name-wrap">
+									<div>${content[i].nickname}</div>
+									<div><span class="review-zan"><img src="${that.isZan(content[i].user)}" alt=""><span detail="groom">${content[i].groom}</span></span></div>
+								</div>
+								<div class="review-con">
+								${content[i].contents}
+								</div>
+								<div class="review-time-wrap">
+									<div>${util.getNowTime(content[i].create_time,true)}</div>
+									<div><span class="jub">举报</span></div>
+								</div>
+							</div>
+						</div>`;
+			}
+			that.pageList.page == 1 ? $('.feed-back').html(html) : $('.feed-back').append(html);
+
+			setTimeout(function() {
+				mui('#content').pullRefresh().endPullupToRefresh();
+			}, 1000)
+			mui("#content").on("tap", ".jub", function() {
+				var id = $(this).parents('.review-wrap').attr('data-id');
+				that.clickFeedback({
+					news_id: id,
+					type: 2
+				})
+			});
+			
+			mui("#content").on("tap", ".review-zan", function() {
+				var src = $(this).find('img').attr('src');
+				var id = $(this).parents('.review-wrap').attr('data-id');
+				that.clickZan({
+					news_id:id,
+					type: 2,
+					src:src,
+					el:$(this).find('img')
+				})
+			});
+
+		},
+		showZanImg:function(clickOption){
+			console.log(clickOption)
+			if(clickOption == 1){
+				return "/resource/front/img/iszan.png"
+			}
+			return "/resource/front/img/赞.png"
+		},
+		isZan:function(zanArr,clickOption){
+			///resource/front/img/赞.png
+			var that = this; 
+			//显示点赞图标
+			if(!that.params.uid)
+				return "/resource/front/img/赞.png";
+			if(zanArr.indexOf(parseInt(that.params.uid)) != -1){
+				return "/resource/front/img/iszan.png";
+			}else{
+				return "/resource/front/img/赞.png";
+			}
+			
+		},
+		feedbake: function() { //评论
+			var that = this;
+			mui(".news-wrap").on("tap", ".send", function() {
+				if(!that.isLogin()) {
+					return false;
+				}
+				var input = $(this).prev();
+				var comment = $(this).prev().val();
+				if(comment.length > 150) {
+					mui.toast("最多字数为150");
+					return false;
+				} else if(comment.length == 0) {
+					mui.toast("请输入评语再评论");
+					return false;
+				}
+				util.doAjax({
+					url: "/api/Newsdetail/write_comment",
+					method: "post",
+					data: {
+						news_id: that.params.news_id,
+						user_id: that.params.uid,
+						comment: comment
+					},
+					success: function(res) {
+						that.pageList.page = 1;
+						that.feedbakeList();
+						input.val(""); //设置为空
+					}
+				});
+			})
+		},
+		share: function() { //分享
+
+		},
+		handClickAd: function() { //点击广告加钱
+			
+		},
+		addmoney: function(time) { //canvas  加币
+			var timeArr = [10, 20, 30];
+			return false;
+			util.doAjax({
+				url: "/api/Newsdetail/write_comment",
+				method: "post",
+				data: {
+					time:timeArr[timeArr.indexOf(time)],
+					news_id: that.params.news_id
+				},
+				success: function(res) {
+					
+				}
+			});
+		},
+		isLogin: function() {
+			if(!this.params.uid) {
+				mui.toast("请登录再操作！");
+				//登录
+				if(mui.os.ios) { //ios
+					goLogin()
+				} else { //安卓
+					window.android.goLogin()
+				}
+				return false
+			}
+			return true
+		},
 
 	})
 </script>

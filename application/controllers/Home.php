@@ -10,10 +10,19 @@ class Home extends Base {
         $this->data['key'] = '龙采头条';
         $this->twig->render('front/index/index.html', $this->data);
     }
+    
+    public function video()
+    {
+        $this->data['key'] = '龙采头条视频';
+        $this->twig->render('front/index/video.html', $this->data);
+    }
+	
+	public function canvas()
+    {
+        $this->data['key'] = '龙采头条';
+        $this->twig->render('front/index/canvas.html', $this->data);
+    }
 	
 	
-//	public function headline(){
-//		$this->data['key'] = '龙采头条';
-//      $this->twig->render('front/longcai/headline.html', $this->data);
-//	}
+
 }
