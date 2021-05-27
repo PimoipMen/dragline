@@ -96,6 +96,7 @@ body {
 	border-radius: 50%;
 	overflow: hidden;
 	position: absolute;
+	display: none;
 }
 
 .canvas-con {

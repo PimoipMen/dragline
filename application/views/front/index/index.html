@@ -122,7 +122,7 @@
 			it.loadmore(); //初始化上拉加载
 			it.initInfo(); //获取详情
 			it.feedbakeList(); //获取评论列表
-			it.InitCanvas();
+			
 			it.content = {};
 		},
 		InitCanvas: function() {
@@ -203,18 +203,37 @@
 				img.src = "/resource/front/img/红包(1).png";
 			}
 		},
+		
+		/**
+		 * 1、分享出去链接  没有设备号 没有uid  没有token 
+		 * 2、app未登录的情况下  没有token  没有uid  有 设备号
+		 * 3、app在登录的情况下  有token  有uid  有设备号
+		 */
+		
 		initInfo: function() {
 			var that = this;
+			var data = {
+				news_id: that.params.news_id
+			};
+			if(that.params.uid){
+				data.user_id = that.params.uid
+			}
+			if(that.params.equipment){
+				data.imei = that.params.equipment
+			}
 			util.doAjax({
 				url: "/api/Newsdetail/detail",
 				method: "get",
-				data: {
-					news_id: that.params.news_id
-				},
+				data: data,
 				success: function(res) {
 					that.getContent(res.data);
 					that.content = res.data;
 					that.news_rand();
+					//只有在没有加过3次钱再加钱
+					if(res.data.seconds_status != 3){
+						$('.canvas-box').show()
+						that.InitCanvas();
+					}
 				}
 			});
 		},
@@ -456,17 +475,25 @@
 			
 		},
 		addmoney: function(time) { //canvas  加币
+			var that = this;
 			var timeArr = [10, 20, 30];
-			return false;
+			if(timeArr.indexOf(time) == -1){
+				return false;
+			}
+			var data = {
+				seconds:timeArr[timeArr.indexOf(time)],
+				news_id: that.params.news_id,
+				imei:that.params.equipment
+			}
+			if(that.params.uid){
+				data.user_id = that.params.uid
+			}
 			util.doAjax({
-				url: "/api/Newsdetail/write_comment",
+				url: "/api/Newsdetail/get_coins",
 				method: "post",
-				data: {
-					time:timeArr[timeArr.indexOf(time)],
-					news_id: that.params.news_id
-				},
+				data: data,
 				success: function(res) {
-					
+					console.log(res)
 				}
 			});
 		},
