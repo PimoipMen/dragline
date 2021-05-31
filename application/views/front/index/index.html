@@ -113,6 +113,7 @@
 	defineClass('init', {
 		init: function() {
 			var it = this;
+			var that = this;
 			it.params = util.GetRequest(); //获取传参
 			util.setLocalStorage('token', it.params.token)
 			it.pageList = {
@@ -124,13 +125,24 @@
 			it.feedbakeList(); //获取评论列表
 			
 			it.content = {};
+			mui("#content").on("tap", ".infojub", function() {
+				that.clickFeedback({
+					news_id: that.params.news_id,
+					type: 1,
+				})
+			});
+			mui("#content").on("tap", ".review-zan-info", function() {
+				var src = $(this).find('img').attr('src');
+				that.clickZan({
+					news_id: that.params.news_id,
+					type: 1,
+					src:src,
+					el:$(this).find('img')
+				})
+			});
 		},
 		InitCanvas: function() {
 			var that = this;
-			//			if(!that.time == 30){
-			//				$('.canvas').remove();
-			//				return false;
-			//			}
 			var canvas = document.getElementById('yuan');
 			var content = canvas.getContext("2d");
 			var centerX = canvas.width / 2; //X 轴中心点
@@ -221,6 +233,11 @@
 			if(that.params.equipment){
 				data.imei = that.params.equipment
 			}
+			if(that.params.equipment && !that.params.uid){
+				data.type = 2
+			}else if(that.params.equipment && that.params.uid){
+				data.type = 1
+			}
 			util.doAjax({
 				url: "/api/Newsdetail/detail",
 				method: "get",
@@ -289,21 +306,7 @@
 			
 			$('.news-zan').attr('src',that.isZan(content.user))
 			that.feedbake();
-			mui("#content").on("tap", ".infojub", function() {
-				that.clickFeedback({
-					news_id: that.params.news_id,
-					type: 1,
-				})
-			});
-			mui("#content").on("tap", ".review-zan-info", function() {
-				var src = $(this).find('img').attr('src');
-				that.clickZan({
-					news_id: that.params.news_id,
-					type: 1,
-					src:src,
-					el:$(this).find('img')
-				})
-			});
+			
 		},
 		clickFeedback: function(option) { //文章 和 评论 举报
 			var that = this;
@@ -487,6 +490,11 @@
 			}
 			if(that.params.uid){
 				data.user_id = that.params.uid
+			}
+			if(that.params.equipment && !that.params.uid){
+				data.type = 2
+			}else if(that.params.equipment && that.params.uid){
+				data.type = 1
 			}
 			util.doAjax({
 				url: "/api/Newsdetail/get_coins",

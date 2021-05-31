@@ -1,0 +1,186 @@
+{% include 'front/header1.html' %}
+<style type="text/css">
+	.form {
+		width: 6.933333rem;
+		margin: auto;
+		margin-top: 0.8rem;
+	}
+	
+	.form .tool {
+		width: 80%;
+		margin: auto;
+		margin-bottom: 0.506666rem;
+		display: flex;
+		flex-flow: row;
+	}
+	
+	.form .tool span {
+		margin-right: 0.666666rem;
+		line-height:  0.933333rem;
+	}
+	
+	.mui-btn {
+		padding: 0 !important;
+	}
+	
+	.get-code {
+		width: 4rem;
+		background: #ffa874;
+		border-color: #ffa874;
+		height: 0.933333rem;
+		line-height: 0.933333rem;
+		font-size: 0.32rem;
+		float: left;
+		display: block;
+	}
+	input{
+		font-size: 0.853333rem !important;
+	}
+	input[type='submit'],
+	.mui-btn-primary,
+	.mui-btn-blue {
+		background: #ffa874;
+	}
+	
+	.ok {
+		margin-top: 1.466666rem;
+		width: 8rem;
+		height: 1.333333rem;
+	}
+</style>
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">修改密码</h1>
+</header>
+<div class="content">
+	<div class="form">
+		<div class="tool">
+			<span id="phone" class="">
+				
+			</span>
+			<div field="phoneCode" required="true" id="getcode" class="mui-btn mui-btn-primary get-code">获取验证码</div>
+		</div>
+		<div class="mui-input-row mui-password">
+			<input type="text" id="password" style="font-size: 0.4rem !important;">
+		</div>
+
+	</div>
+	<div class="btn ok">
+		确定
+	</div>
+</div>
+{% include 'front/foot.html' %}
+<script>
+	mui.ready(function() {
+		this.init();
+		this.defaultText = "获取验证码";
+		this.id = util.getUrlParam('id');
+		this.countdown = 59; //倒计时
+		this.time = "";
+		var that = this;
+		
+		$('.mui-action-back').click(function(){
+			window.location.href = 'forward?uid='+util.getLocalStorage("uid");
+		})
+
+	})
+
+	function init() {
+		var that = this;
+		this.getCode(); //获取验证码倒计时
+		//this.getUsetInfo(); //获取用户手机号码  
+		this.changePwd(); //跳转到 修改密码页面
+		$("#phone").text(util.getLocalStorage('code').substr(0, 3) + '****' + util.getLocalStorage('code').substr(7))
+		that.phone = util.getLocalStorage('code');
+		$("#phone").attr("phone",util.getLocalStorage('code'));
+	}
+
+	function changePwd() {
+		var that = this;
+		$(".ok").click(function(){
+			if(!$("#password").val()) {
+				mui.toast("请输入验证码");
+				return false;
+			}
+			util.doAjax({
+				url: "/api/user/chanpwd_yzm",
+				method: "post",
+				data: {
+					yzm: $("#password").val(),
+					mobile:that.phone
+				},
+				success: function(res) {
+					var data = res.data;
+					if(res.status != 'success'){
+						mui.toast("验证码错误");
+						return false;
+					}
+					window.location.href = "forgetpwdone?phone="+that.phone
+				}
+			})
+		})
+		
+	}
+
+//	function getUsetInfo() {
+//		var that = this;
+//		util.doAjax({
+//			url: "/api/user/user_code",
+//			method: "post",
+//			data: {
+//				user_code: util.getLocalStorage('uid')
+//			},
+//			success: function(res) {
+//				var data = res.data;
+//				$("#phone").text(data['user_name'].substr(0, 3) + '****' + data['user_name'].substr(7))
+//				that.phone = data['user_name'];
+//				$("#phone").attr("phone",data['user_name']);
+//			}
+//		})
+//	}
+
+	function getCode() {
+		var that = this;
+		$('#getcode').stop().click(function() {
+			if(that.time){
+				return false;
+			}
+			if(that.phone && /^1(3|4|5|7|8|9)\d{9}$/.test(that.phone)) {
+				util.doAjax({
+					url: "/api/user/sent_msg",
+					method: "post",
+					data: {
+						mobile:that.phone
+					},
+					success: function(res) {
+						mui.toast("验证码发送成功")
+					}
+				})
+				if(that.time) {
+					return;
+				}
+				that.time = setInterval(() => {
+					settime();
+				}, 1000);
+			} else {
+				mui.toast("请输入正确的手机号码");
+			}
+		})
+	}
+
+	function settime(val) {
+		var that = this;
+		if(that.countdown == 0) {
+
+			$('#getcode').text("获取验证码");
+			that.countdown = 60;
+			clearInterval(that.time);
+			that.time = "";
+		} else {
+			$('#getcode').text("重新发送(" + that.countdown + ")");
+			that.defaultText = "重新发送(" + that.countdown + ")";
+			that.countdown--;
+		}
+	}
+
+</script>

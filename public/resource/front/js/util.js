@@ -8,7 +8,7 @@ var util = {
 	/**
 	 * 私有构造函数   
 	 */
-	api_url: 'http://news.isxuan.com',
+	api_url: 'http://info.isxuan.com/',
 	__construct: function() {
 		var it = this;
 	},
@@ -232,8 +232,10 @@ var util = {
 		ajaxOption.type = defaultOptions.method;
 		ajaxOption.data = option.data || defaultOptions.data || {};
 		ajaxOption.success = defaultOptions.success;
-
-		ajaxOption.data['token'] = util.getLocalStorage('token');
+		if(util.getLocalStorage('token')){
+			ajaxOption.data['token'] = util.getLocalStorage('token') == 'undefined' ? "" : util.getLocalStorage('token');
+		}
+		
 		ajaxOption.error = defaultOptions.error;
 		ajaxOption.complete = defaultOptions.complete;
 		var tajax = $.ajax(ajaxOption);
@@ -691,7 +693,7 @@ var util = {
 		var verifyArr = {
 			password: [/^[\S]{6,12}$/, "密码必须6到12位，且不能出现空格"], //密码
 			tel: [
-				/^1(3|4|5|7|8)\d{9}$/,
+				/^1(3|4|5|7|8|9)\d{9}$/,
 				"不是完整的11位手机号或者正确的手机号前七位"
 			], //手机号
 			gtNum: [/^\d+$/, "请填写非负数"], //非负数

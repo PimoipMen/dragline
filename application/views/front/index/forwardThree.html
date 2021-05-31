@@ -1,0 +1,379 @@
+{% include 'front/header1.html' %}
+<style>
+	.for-con {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-flow: column;
+		background: #fff;
+		margin: 0.266666rem;
+		padding-bottom: 0.533333rem;
+		/*width: 97%;*/
+		padding-left: 0.626666rem;
+		padding-right: 0.626666rem;
+	}
+	
+	.for-image {
+		margin-top: 0.666666rem;
+		width: 2.08rem;
+		height: 2.213333rem;
+	}
+	
+	.for-money {
+		color: #ce3e3f;
+		text-align: center;
+	}
+	
+	.money {
+		font-size: 0.56rem;
+		margin-top: 0.32rem;
+	}
+	
+	.title {
+		font-size: 0.346666rem;
+		margin-top: 0.186666rem;
+		margin-bottom: 1.28rem;
+	}
+	
+	.for-bottom {
+		padding-top: 0.853333rem;
+		color: #999;
+		padding: 0.853333rem 0.426666rem;
+		font-size: 0.346666rem;
+	}
+	.mui-btn-blue:enabled:active{
+		border: none !important;
+	}
+	.for-bottom p {
+		margin-bottom: 0.613333rem;
+	}
+	
+	.for-bottom .btn {
+		background: #fee151;
+		height: 1.333333rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		border-radius:  0.08rem;
+		font-size: 0.48rem;
+		margin-top: 1.173333rem;
+	}
+	
+	.dialog-title {
+		text-align: center;
+		margin-top: 0.586666rem;
+		margin-bottom: 1.066666rem;
+		color: #333;
+	}
+	
+	.weui-cells {
+		margin-top: 0;
+		margin: auto;
+		width: 93%;
+	}
+	
+	
+	.weui-dialog .weui-cells:before,
+	.weui-dialog .weui-cells:after {
+		border: none;
+	}
+	
+	.weui-cell__bd {
+		position: relative;
+	}
+	
+	input {
+		/*margin-bottom: .1rem;*/
+		color: #999 !important;
+		border: 0 !important;
+		margin-bottom: 0 !important;
+		color: #333;
+		font-size: 0.373333rem;
+		padding: 0;
+	}
+	
+	.weui-cells_form:before {
+		border: 0 !important;
+	}
+	
+	.weui-cells_form {
+		margin-top: 0.533333rem;
+	}
+	
+	.weui-cell__bd:after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 0.026666rem;
+		background: #b5b5b5;
+	}
+	
+	.for-top-con {
+		display: flex;
+		flex-flow: row;
+		justify-content: space-between;
+		width: 100%;
+		margin-top: 0.666666rem;
+	}
+	
+	.for-con .weui-input {
+		width: 4rem;
+		margin: auto 0.266666rem;
+		font-size: 0.48rem;
+	}
+	
+	.for-con label {
+		color: #333;
+		font-size: 0.48rem;
+	}
+	
+	.mui-btn-link {
+		color: #333 !important;
+	}
+	.weui-cell__bd input{
+		padding: 0;
+	}
+</style>
+
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">我的钱包</h1>
+	<a class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" href="addCard" id="addCard">添加银行卡</a>
+</header>
+<div class="content">
+	<div class="for-con">
+		<p class="for-top-con">
+			<span class="" style="font-size: 0.373333rem; color: #333;">提现到银行卡</span>
+			<a href="" style="font-size: 0.373333rem; color: #48759e;" id="card"></a>
+			<a style="font-size: 0.373333rem; color: #ef3b3c;" id="del">删除</a>
+		</p>
+		<p style="font-size: 0.373333rem; color: #666;">72小时内到账</p>
+		<p style="font-size: 0.373333rem; color: #333;text-align: left;width: 100%;">提现金额</p>
+		<div class="weui-cells weui-cells_form">
+			<div class="weui-cell weui-cell_warn">
+				<div class="weui-cell__bd">
+					<label>￥</label><input type="number" maxlength="3"  max="1000" class="weui-input" type="number" placeholder=""><label>（人民币）</label>
+				</div>
+			</div>
+			<div class="weui-cell weui-cell_warn">
+				<div class="weui-cell__bd">
+					<p style="height: 0.666666rem;margin-left: .7rem; margin-top: 0.8rem; color: #ef3b3c; font-size: 0.48rem;"><span id="lastmoney"></span>人民币</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="for-bottom">
+		<p>当日最高提现金额<span id="maxMoney"></span>元，最低提现金额<span id="minMoney"></span>元，提现每1元人民币收取<span id="extract_poundage"></span>%手续费</p>
+		<div class="btn">
+			确定
+		</div>
+	</div>
+</div>
+<script>
+	function setFont() {
+		var HTML = document.getElementsByTagName('html')[0];
+		/*var dpr=1;//像素比
+		var Size=document.documentElement.clientWidth*dpr/10;*/
+		//把viewport视口分成10份的rem,html的font-size为1rem
+		var Size = document.documentElement.clientWidth / 10;
+		if(Size >= 75) {
+			Size = 75
+		}
+		HTML.style.fontSize = Size + 'px';
+		var body = document.getElementsByTagName('body')[0];
+		body.style.margin = '0 auto';
+		body.style.width = Size * 10 + 'px';
+	};
+	setFont(); //初始适配
+	window.onresize = function() { //窗口大小改变适配
+		setFont();
+	};
+</script>
+{% include 'front/foot.html' %}
+<script>
+	mui.ready(function() {
+		this.init();
+	})
+
+	function init() {
+//		this.addCard(); //添加银行卡
+		this.inputChange(); //输入框切换
+		this.forward(); //提下
+		this.changeCard(); //切换银行卡
+		this.getCardList(); //初始化银行卡
+		this.Delete();  //删除
+		this.initCardList();
+	}
+	
+	function Delete(){
+		var that = this;
+		$('#del').stop().click(function(){
+			util.doAjax({
+				url: "/api/user/usercard_del",
+				method: "post",
+				data: {
+					id: $('#card').attr('code'),
+					mobile:util.getLocalStorage('code')
+				},
+				success: function(res) {
+					if(res.status == 'success'){
+						mui.toast("删除成功");
+						$('#card').attr('code',"");
+						that.getCardList(); //初始化银行卡
+					}else{
+						mui.toast("请添加银行卡");
+					}
+					
+				}
+			})
+		})
+	}
+	
+	function changeCard() {
+		$("#card").click(function() {
+			util.loading();
+			if(!$("#card").attr('code')) {
+				window.location.href ="addCard"
+//				mui.openWindow({
+//					url: 'addCard',
+//					id: 'addCard'
+//				});
+			} else {
+				mui.openWindow({
+					url: 'accountBankCard',
+					id: 'accountBankCard'
+				});
+			}
+
+		})
+	}
+
+	function initCardList() {
+		var that = this;
+		util.doAjax({
+			url: "/api/user/bank_list",
+			method: "post",
+			data: {
+				uid: util.getLocalStorage('code')
+			},
+			success: function(res) {
+				var data = res.data;
+				$('#minMoney').text(parseInt(res.money.min[0].task_reward));
+				$('#maxMoney').text(parseInt(res.money.max[0].task_reward));
+				$('#extract_poundage').text(res.money.bill[0].task_reward *100);
+				
+				
+				
+			}
+		})
+	}
+	
+	function getCardList() {
+		var that = this;
+		util.doAjax({
+			url: "/api/user/usercard_list",
+			method: "post",
+			data: {
+				mobile: util.getLocalStorage("code")
+			},
+			success: function(res) {
+				var data = res.data.list;
+				if(data.length == 0) {
+					$("#card").text("请添加银行卡");
+					mui.toast('您还没有添加银行卡');
+					$("#card").attr('href','addCard')
+					return false;
+				}
+				$("#card").attr('href','accountBankCard')
+				that.getCurentbank(data)
+			}
+		})
+		
+		
+
+	}
+
+	function getCurentbank(bankList) {
+		var count = 0;
+		//默认选中 添加过的银行卡
+		for(var i in bankList) {
+			if(bankList[i].default == 1){
+				count++;
+				$("#card").text(bankList[i].bank_name ).attr('code', bankList[i].id);
+			}
+			
+		}
+		//没有体现过默认选中  最后添加的 银行卡 
+		if(count == 0) {
+			$("#card").text(bankList[bankList.length - 1].bank_name).attr('code', bankList[bankList.length - 1].id)
+		}
+	}
+
+	function forward() {
+		$('.btn').click(function() {
+			var lastMoney = $('#lastmoney').text();
+//			if(!lastMoney) {
+//				mui.toast("请输入提现金额再提现");
+//				console.log(1)
+//				return false;
+//			}
+//			if(!$("#card").attr('code')){
+//				mui.toast('您还没有添加银行卡');
+//					return false;
+//			}
+//			if($(".weui-input").val() > parseInt(util.getLocalStorage('usermoney'))){
+//				mui.toast('您的余额为'+parseInt(util.getLocalStorage('usermoney'))+",您不能提现");
+//				return false;
+//			}
+			if($('#lastmoney').text() > parseInt($('#maxMoney').text())){
+				mui.toast("最高提现金额"+$('#maxMoney').text())
+				return false;
+			}else if($('#lastmoney').text() < parseInt($('#minMoney').text())){
+				mui.toast("最低提现金额"+$('#minMoney').text())
+				return false;
+			}
+			
+			util.doAjax({
+				url: "/api/user/finance",
+				method: "post",
+				data: {
+					mobile: util.getLocalStorage("code"),
+					money: $('#lastmoney').text(),
+					bank_id: $("#card").attr('code'),
+					lcb_money:$('.weui-input').val() * 100
+				},
+				success: function(res) {
+					if(res.code == "200"){
+						mui.toast("提现成功!");
+						$('#lastmoney').val("");
+						setTimeout(function() {
+							util.setLocalStorage('usermoney',res.data.earn);
+							window.history.go(-1);
+//							window.location.href = 'givedetails?id=' + res.data.id;
+						}, 500)
+					}else{
+						mui.toast(res.msg);
+					}
+				}
+			})
+
+		})
+	}
+
+	function inputChange() {
+		var earn = util.getLocalStorage('usermoney');
+		$(".weui-input").bind('input propertychange', function() {
+			if($(this).val() > parseInt(earn)){
+				mui.toast('您的余额为'+earn)
+			}
+			var money = $(this).val();
+			var lastmoney = money ? (money * (1-parseInt($('#extract_poundage').text())/100) ) : 0;
+			$('#lastmoney').text((Math.floor(lastmoney*100)/100).toFixed(2))
+			
+		});
+	}
+
+</script>

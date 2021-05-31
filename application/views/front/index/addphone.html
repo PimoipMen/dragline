@@ -1,0 +1,188 @@
+{% include 'front/header1.html' %}
+<style type="text/css">
+	.mui-input-group .mui-input-row {
+		height: 1.466666rem !important;
+		display: flex;
+		align-items: center;
+		flex-flow: row;
+		margin-bottom: 0.133333rem;
+		background: #fff;
+	}
+	
+	.mui-input-group {
+		background: none;
+	}
+	
+	.mui-input-row input {
+		text-align: right;
+	}
+	
+	.mui-input-row:after {
+		background: transparent !important;
+	}
+	
+	.for-bottom {
+		padding-top: 0.32rem;
+		color: #999;
+		padding: 0.32rem 0.426666rem;
+		font-size: 0.346666rem;
+	}
+	
+	.for-bottom .btn {
+		background: #fee151;
+		height: 1.333333rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		border-radius: 0.08rem;
+		font-size: 0.48rem;
+		margin-top: 1.173333rem;
+	}
+	
+	.get-code {
+		width: 2rem !important;
+		background: #ffa874;
+		border-color: #ffa874;
+		height: 0.8rem;
+		padding: 0 !important;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 0.32rem;
+		margin-left: 0.8rem;
+	}
+	
+	.mui-input-row label {
+		padding-left: 0.48rem;
+		width: auto;
+		margin-right: 0.48rem;
+	}
+	
+	.code {
+		width: 2.666666rem !important;
+	}
+	
+	.mui-input-row label~input,
+	.mui-input-row label~select,
+	.mui-input-row label~textarea {
+		text-align: left;
+		float: left;
+		font-size: 0.373333rem;
+		color: #666;
+	}
+	.mui-input-row label{
+		font-size: 0.373333rem;
+	}
+	.mui-input-row input{
+		text-align: right;
+		font-size: 0.373333rem;
+	}
+</style>
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">添加银行卡</h1>
+</header>
+<div class="content">
+	<form class="mui-input-group" id="form">
+		<div class="mui-input-row">
+			<label>手机号</label>
+			<input type="text" id="phone" field="mobile" value="" required="true" placeholder="请输入银行预留手机号">
+		</div>
+		<div class="mui-input-row">
+			<label>验证码</label>
+			<input type="text" field="yzm" required="true" class=" code" placeholder="输入验证码">
+			<div class="mui-btn mui-btn-primary get-code" id="getcode">获取验证码</div>
+		</div>
+	</form>
+
+	<div class="for-bottom">
+		<div class="btn">
+			确定
+		</div>
+	</div>
+</div>
+{% include 'front/foot.html' %}
+<script>
+	mui.ready(function() {
+		this.init();
+		this.defaultText = "获取验证码";
+		this.id = util.getUrlParam('id');
+		this.countdown = 59; //倒计时
+		this.time = "";
+		var that = this;
+		
+		
+	})
+
+	function init() {
+		this.getCode(); //获取验证码倒计时
+		this.addCard(); //添加银行卡第二步
+	}
+
+	function addCard() {
+		var that = this;
+		$(".btn").click(function(){
+			var data = util.getFormCode({el:"#form"});
+			data.id = that.id;
+			if(!data.yzm){
+				mui.toast("请输入验证码!");
+				return false;
+			}
+			util.doAjax({
+				url: "/api/user/addcard_two",
+				method: "post",
+				data: data,
+				success: function(res) {
+					if(res.status !== "success"){
+						mui.toast(res.msg);
+						return false;
+					}
+					mui.toast("添加成功");
+					window.history.go(-2);
+				}
+			})
+		})
+	}
+
+	function getCode() {
+		var that = this;
+		$('#getcode').click(function() {
+			if(that.time) {
+				return false;
+			}
+			if($('#phone').val() && /^1(3|4|5|7|8|9)\d{9}$/.test($('#phone').val())) {
+				util.doAjax({
+					url: "/api/user/sent_msg",
+					method: "post",
+					data: {
+						mobile: $('#phone').val()
+					},
+					success: function(res) {
+						mui.toast("验证码发送成功")
+					}
+				})
+				
+				that.time = setInterval(() => {
+					settime();
+				}, 1000);
+			} else {
+				mui.toast("请输入正确的手机号码");
+			}
+		})
+	}
+
+	function settime(val) {
+		var that = this;
+		if(that.countdown == 0) {
+			$('#getcode').text("获取验证码");
+			that.countdown = 60;
+			clearInterval(that.time);
+			that.time = "";
+		} else {
+			$('#getcode').text("重新发送(" + that.countdown + ")");
+			that.defaultText = "重新发送(" + that.countdown + ")";
+			that.countdown--;
+		}
+	}
+</script>

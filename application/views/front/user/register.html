@@ -1,0 +1,132 @@
+{% include 'front/header.html' %}
+<link rel="stylesheet" href="/resource/front/css/login.css" />
+</head>
+
+<body>
+	<div class="user-con">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back">
+				<!--<img src="/resource/front/img/图层9.png" class="close" />-->
+			</a>
+			<h1 class="mui-title">登录/注册</h1>
+		</header>
+		<div>
+			<div class="login-bottom-wrap div-tab">
+				<div class="phone input-wrap input1">
+					<input type="text" id="phone" data-type="tel" field="mobile" required="true" errmsg="请输入正确的手机号码" style="width: 55%; margin-bottom: 0;" placeholder="请输入您的手机号码">
+					<div id="getcode">获取验证码</div>
+				</div>
+				<div class="phone input-wrap">
+					<input type="text" id="phone" field="yzm" required="true" errmsg="请输入验证码" style="width: 65%; margin-bottom: 0;" placeholder="输入验证码">
+					<!--<div id="getcode">获取验证码</div>-->
+				</div>
+				<p class="go-login login"> <span class="mmlogin">密码登录</span><span class="forget">未注册用户登陆后自动注册</span></p>
+				<button class="res-q" id="go-login">登录</button>
+				<p class="sm">龙采头条软件负责声明<span class="check"></span></p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+{% include 'front/foot.html' %}
+<script>
+	defineClass('init', {
+		init: function() {
+			var it = this;
+			it.params = util.GetRequest(); //获取传参
+			it.login();
+			it.countdown = 59; //倒计时
+			$('.mmlogin').click(function() {
+				window.history.go(-1)
+			})
+
+			$('#getcode').on('click', function() {
+				it.getCode('#getcode', '#phone');
+			})
+
+			$('.check').click(function() {
+				$(this).hasClass('is-check') ? $(this).removeClass('is-check') : $(this).addClass('is-check')
+			})
+		},
+		login: function() {
+			var it = this;
+			$('#go-login').click(function() {
+				var data = util.getFormCode({
+					el: ".login-bottom-wrap"
+				});
+
+				if(data) {
+					if(it.params.be_invite) {
+						data['be_invite'] = it.params.be_invite
+					}
+					
+					if(!$('.check').hasClass('is-check')) {
+						mui.toast("");
+						return false;
+					}
+					util.doAjax({
+						url: "/api/user/login",
+						method: "post",
+						data: data,
+						success: function(res) {
+							if(res.status == 'success') {
+								mui.toast(res.msg);
+								setTimeout(function() {
+									if(mui.os.android) {
+										window.location.href = 'http://zhushou.360.cn/detail/index/soft_id/3968740';
+									} else if(mui.os.ios) {
+										window.location.href = 'https://itunes.apple.com/us/app/职尺校园/id1320720197?l=zh&ls=1&mt=8';
+									} else {
+										window.location.href = 'http://www.52qingqiyun.com/app/';
+									}
+								})
+							} else {
+								mui.toast(res.msg);
+							}
+						}
+					})
+				}
+			})
+		},
+		getCode: function(el, textEl) {
+			var that = this;
+			var phone = el == "#getcode1" ? "#phoner" : "#phone";
+			if($(phone).val() && /^1(3|4|5|7|8|9)\d{9}$/.test($(phone).val())) {
+				if(that.time) {
+					return;
+				}
+				util.doAjax({
+					url: "/api/user/sent_msg",
+					method: "post",
+					data: {
+						mobile: $(phone).val()
+					},
+					success: function(res) {
+						//						mui.toast("验证码发送成功")
+					}
+				})
+
+				that.time = setInterval(() => {
+					that.settime(el);
+				}, 1000);
+			} else {
+				mui.toast("请输入正确的手机号码");
+			}
+		},
+
+		settime: function(el) {
+			var that = this;
+			if(that.countdown == 0) {
+				$(el).text("获取验证码");
+				that.countdown = 60;
+				clearInterval(that.time);
+				that.time = "";
+			} else {
+				$(el).text("重新发送(" + that.countdown + ")");
+				that.defaultText = "重新发送(" + that.countdown + ")";
+				that.countdown--;
+			}
+		}
+	})
+</script>

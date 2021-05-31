@@ -1,0 +1,270 @@
+ {% include 'front/header.html' %}
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	
+	.shop-wrap-img img {
+		width: 7.5rem;
+		float: left;
+		pointer-events: none
+	}
+	
+	.shop-wrap-nuuu{
+		position: absolute;
+		width: 4.91rem;
+		height: 0.86rem;
+		line-height: 0.86rem;
+		background: #fff;
+		bottom: 0.4rem;
+		text-align: center;
+		left: 0;
+		margin: 0 auto;
+		right: 0;
+		color: #44cbc3;
+		font-size: 0.36rem;
+		border-radius: 0.05rem;
+	}
+	
+	html {
+		height: 100%;
+	}
+	
+	body {
+		height: 100% !important;
+		background: url("/resource/front/img/down.png") no-repeat center center !important;
+		background-size: 100% 100% !important;
+	}
+	
+	section {
+		margin: 0 auto;
+		text-align: center;
+		height: 100%;
+		width: 5rem;
+		position: relative;
+	}
+	img{
+		pointer-events: none;
+	}
+	.img {
+		font-size: 0;
+		margin-bottom: 0.8rem;
+		padding-top: 1rem;
+		pointer-events: none
+	}
+	
+	.logo {
+		width: 2.64rem;
+		height: 2.64rem;
+	}
+	
+	p {
+		font-size: 0.36rem;
+		color: #fefefe;
+		margin-bottom: 0.38rem;
+	}
+	a span {
+		float: right;
+		height: 100%;
+		line-height: 1.08rem;
+	}
+	
+	#modal {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(1, 1, 1, 0.8);
+		display: none;
+	}
+	
+	.img1 {
+		padding: 0.45rem 0.35rem 0 0;
+		overflow: hidden;
+		margin-bottom: 1.45rem;
+	}
+	
+	.img1 img {
+		float: right;
+		width: 4rem;
+		height: 2.83rem;
+	}
+	
+	.img2 {
+		overflow: hidden;
+		margin-bottom: 0.6rem;
+		padding-left: 0.35rem;
+	}
+	
+	.img2 .span1,
+	.img3 .span1 {
+		float: left;
+		width: 0.58rem;
+		height: 0.58rem;
+		font-size: 0.36rem;
+		color: #333333;
+		text-align: center;
+		line-height: 0.58rem;
+		background: #fee151;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		margin-right: 0.45rem;
+	}
+	
+	.img2 .p1,
+	.img3 .p1 {
+		float: left;
+		font-size: 0.36rem;
+		color: #FFFFFF;
+		margin-bottom: 0;
+	}
+	
+	.img2 .p1 .span2 {
+		line-height: 0.58rem;
+		float: left;
+	}
+	
+	.img2 img {
+		width: 0.98rem;
+		height: 0.58rem;
+		float: left;
+		line-height: 0.58rem;
+		margin: 0 0.31rem;
+	}
+	
+	.img2 .span3 {
+		float: left;
+		line-height: 0.58rem;
+	}
+	
+	.img3 {
+		overflow: hidden;
+		padding-left: 0.35rem;
+	}
+	
+	.img3 .span2 {
+		float: left;
+		line-height: 0.58rem;
+		margin-right: 0.24rem;
+	}
+	
+	.img3 img {
+		float: left;
+		width: 2.54rem;
+		height: 0.58rem;
+		line-height: 0.58rem;
+	}
+</style>
+<!--<div class="shop-wrap-img">
+			<img src="/resource/front/img/down.png"/>
+			<div>立即下载</div>-->
+</div>
+<section>
+	
+
+	
+	<!--<a class="a1" href=""><span>下载龙采校园APP</span></a>-->
+	<a class="shop-wrap-nuuu">立即下载</a>
+</section>
+
+<div id="modal">
+	<div class="img1">
+		<img src="/resource/front/img/xiazai.png" alt="">
+	</div>
+
+	<div class="img2">
+		<span class="span1">1</span>
+		<p class="p1">
+			<span class="span2">点击右上角</span>
+			<img src="/resource/front/img/dian.png" alt="">
+			<span class="span3">按钮</span>
+		</p>
+	</div>
+
+	<div class="img3">
+		<span class="span1">2</span>
+		<p class="p1">
+			<span class="span2">选择</span>
+			<img src="/resource/front/img/open.png" alt="">
+		</p>
+	</div>
+
+</div>
+
+</body>
+{% include 'front/foot.html' %}
+<script>
+	defineClass('init', {
+		init: function() {
+			var it = this;
+			it.initDownload();
+			$('.shop-wrap-nuuu').click(function(){
+				if(mui.os.android) {
+					$('.shop-wrap-nuuu').attr('href', 'http://zhushou.360.cn/detail/index/soft_id/3968740');
+				}else if(mui.os.ios){
+					$('.shop-wrap-nuuu').attr('href', 'https://itunes.apple.com/us/app/职尺校园/id1320720197?l=zh&ls=1&mt=8')
+				} else {
+					window.location.href = 'http://www.52qingqiyun.com/app/'
+				}
+			})
+		},
+		initDownload: function() {
+			var u = navigator.userAgent,
+				app = navigator.appVersion;
+			var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+			if(mui.os.android) {
+				$('.shop-wrap-nuuu').attr('href', 'http://zhushou.360.cn/detail/index/soft_id/3968740');
+			}else if(mui.os.ios){
+				$('.shop-wrap-nuuu').attr('href', 'https://itunes.apple.com/us/app/职尺校园/id1320720197?l=zh&ls=1&mt=8')
+			} else {
+				window.location.href = 'http://www.52qingqiyun.com/app/'
+			}
+			var ua = navigator.userAgent.toLowerCase();
+			if(ua.match(/MicroMessenger/i) == "micromessenger") {
+				$('#modal').css({
+					'display': 'block'
+				})
+			} else {
+				$('#modal').css({
+					'display': 'none'
+				})
+			}
+
+			if(!isAndroid && !isiOS) {
+
+			} else {
+				var ref = window.location.href;
+				if(ref.indexOf('?from=') != -1) {
+					//判断用户是扫码进来的
+					var from = ref.split('?from=')[1];
+					//判断不是微信浏览器
+					if(ua.match(/MicroMessenger/i) != "micromessenger") {
+						// console.log(from);
+						$.ajax({
+							url: 'http://zhichi_test.52qingqiyun.com/Pcapi/FromCount/setFrom',
+							type: 'post',
+							data: {
+								'from': from
+							},
+							dataType: 'json',
+							success: function(data) {
+								// console.log(data)
+							}
+
+						})
+					}
+
+				}
+			}
+		},
+		get:function(){
+			$('.shop-wrap-nuuu').click(function(){
+				alert(1)
+			})
+		}
+	})
+</script>

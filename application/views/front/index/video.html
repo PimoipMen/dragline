@@ -4,58 +4,25 @@
 
 <body>
 
-		
-	
 	<div class="news-wrap">
-		<main id="content" >
+		<main id="content">
 			<div style="">
 				<video src="/resource/front/img/QQ20180326-135401-HD.mp4" controls="controls" class="video-video"></video>
-	            <div class="con-news">
-	            
-	                <div class="news-title">西班牙必胜，西班牙必胜，西班牙必胜，西班牙必胜西班牙必胜，西班牙必胜</div>
-	                <div class="news-views-video">
-	                  <div><span>来源于</span><span>人人网</span></div>
-	                  <div><img src="/resource/front/img/赞.png" alt=""> <span>21</span></div>
-	                </div>
-	                
-	            </div>
-				 <div class="views-list">
-	                <span class="con-list-title">相关视频</span>
-	                <!-- 视频 -->
-	                  <div class="video-list-con">
-	                    <div><img src="/resource/front/img/red.png" alt=""></div>
-	                    <div>
-	
-	                      <div>阿道夫骄傲了看似简单；氨基酸；看了大家爱看圣诞节爱看</div>
-	
-	                      <div><img src="/resource/front/img/评论.png" alt=""><span>2121</span></div>
-	                    </div>
-	                  </div>
-	                 <!-- 视频 -->
-	
-	                  <!-- 视频 -->
-	                  <div class="video-list-con">
-	                      <div><img src="/resource/front/img/red.png" alt=""></div>
-	                      <div>
-	  
-	                        <div>阿道夫骄傲了看似简单；氨基酸；看了大家爱看圣诞节爱看</div>
-	  
-	                        <div><img src="/resource/front/img/评论.png" alt=""><span>2121</span></div>
-	                      </div>
-	                    </div>
-	                   <!-- 视频 -->
-	                    <!-- 视频 -->
-	                  <div class="video-list-con">
-	                      <div><img src="/resource/front/img/red.png" alt=""></div>
-	                      <div>
-	  
-	                        <div>阿道夫骄傲了看似简单；氨基酸；看了大家爱看圣诞节爱看</div>
-	  
-	                        <div><img src="/resource/front/img/评论.png" alt=""><span>2121</span></div>
-	                      </div>
-	                    </div>
-	                   <!-- 视频 -->
-	            </div>
+				<div class="con-news">
+					<div class="news-title"></div>
+					<div class="news-views-video">
+						<div><span>来源于</span><span class="source"></span></div>
+						<div class="review-zan-info"><img class="news-zan" src="/resource/front/img/赞.png" alt=""> <span class="groom"></span></div>
+					</div>
+
+				</div>
+				<div class="views-list">
+					<span class="con-list-title">相关视频</span>
+					<div class="video-list">
+
+					</div>
+
+				</div>
 				<!--<div class="con-bottom-gg">
 					<div class="con-bor">
 						<img src="/resource/front/img/icon_share.png" alt="" class="con-bottom-con-img">
@@ -118,13 +85,13 @@
 			<span class="plnub" detail="comment"></span>
 			<span><img src="/resource/front/img/icon_share.png" alt="" class="share-b"></span>
 		</footer>
-	<div class="canvas">
-		<!--class="canvas-con"-->
-		<div class="canvas-box" style="width: 80px; height: 80px; right: 0;">
-			<canvas width="80" height="80" id="yuan"></canvas>
+		<div class="canvas">
+			<!--class="canvas-con"-->
+			<div class="canvas-box" style="width: 80px; height: 80px; right: 0;">
+				<canvas width="80" height="80" id="yuan"></canvas>
+			</div>
+
 		</div>
-		
-	</div>
 	</div>
 </body>
 
@@ -136,6 +103,7 @@
 	defineClass('init', {
 		init: function() {
 			var it = this;
+			var that = this;
 			it.params = util.GetRequest(); //获取传参
 			util.setLocalStorage('token', it.params.token)
 			it.pageList = {
@@ -145,6 +113,29 @@
 			it.loadmore(); //初始化上拉加载
 			it.initInfo(); //获取详情
 			it.feedbakeList(); //获取评论列表
+			mui("#content").on("tap", ".jub", function() {
+				var id = $(this).parents('.review-wrap').attr('data-id');
+				that.clickFeedback({
+					news_id: id,
+					type: 2
+				})
+			});
+
+			mui("#content").on("tap", ".review-zan", function() {
+				var src = $(this).find('img').attr('src');
+				var id = $(this).parents('.review-wrap').attr('data-id');
+				that.clickZan({
+					news_id: id,
+					type: 2,
+					src: src,
+					el: $(this).find('img')
+				})
+			});
+			
+			mui("#content").on("tap", ".video-list-con", function() {
+				var id = $(this).attr('data-id');
+				window.location.href = `/home/video?news_id=${id}&uid=${that.params.uid}&token=${that.params.token}&equipment=${that.params.equipment}`;
+			});
 			
 		},
 		InitCanvas: function() {
@@ -228,16 +219,21 @@
 		initInfo: function() {
 			var that = this;
 			var data = {
-				news_id: that.params.news_id
+				video_id: that.params.news_id
 			};
-			if(that.params.uid){
+			if(that.params.uid) {
 				data.user_id = that.params.uid
 			}
-			if(that.params.equipment){
+			if(that.params.equipment) {
 				data.imei = that.params.equipment
 			}
+			if(that.params.equipment && !that.params.uid) {
+				data.type = 2
+			} else if(that.params.equipment && that.params.uid) {
+				data.type = 1
+			}
 			util.doAjax({
-				url: "/api/Newsdetail/detail",
+				url: "/api/video/videoDetail",
 				method: "get",
 				data: data,
 				success: function(res) {
@@ -245,13 +241,39 @@
 					that.content = res.data;
 					that.news_rand();
 					//只有在没有加过3次钱再加钱
-					if(res.data.seconds_status != 3){
+					if(res.data.seconds_status != 3) {
 						$('.canvas-box').show()
 						that.InitCanvas();
 					}
 				}
 			});
 		},
+		news_rand: function() {
+			var that = this;
+			util.doAjax({
+				url: "/api/video/video_rand",
+				method: "get",
+				data: {
+					cid: that.content.cid
+				},
+				success: function(res) {
+					var data = res.data;
+					var content = "";
+					for(var i in data) {
+						content += `
+						<div class="video-list-con" data-id="${data[i]['id']}" data-cid="${data[i]['cid']}">
+			                    <div><img src="${data[i]['thumb']}" alt=""></div>
+			                    <div>
+			                      <div>${data[i]['title']}</div>
+			                      <div><img src="images/评论.png" alt=""><span>${data[i]['comment']}</span></div>
+			                 </div>
+			            </div>`
+			        }
+					$('.video-list').html(content);
+				}
+			});
+		},
+
 		loadmore: function() {
 			var it = this;
 			mui.init({
@@ -271,19 +293,24 @@
 		getContent: function(content) {
 			var that = this;
 			var detail = "";
-			$('.news-wrap').find('[detail]').each(function() {
-				detail = $(this).attr('detail');
-				if(detail == 'create_time') {
-					$(this).text(util.getDateDiff(content[detail]))
-				} else if(detail == 'content') {
-					$(this).html(content[detail])
-				} else {
-					$(this).text(content[detail])
-				}
-			})
-			
-			$('.news-zan').attr('src',that.isZan(content.user))
+
+			//			$('.news-wrap').find('[detail]').each(function() {
+			//				detail = $(this).attr('detail');
+			//				if(detail == 'create_time') {
+			//					$(this).text(util.getDateDiff(content[detail]))
+			//				} else if(detail == 'content') {
+			//					$(this).html(content[detail])
+			//				} else {
+			//					$(this).text(content[detail])
+			//				}
+			//			})
+			$('.news-zan').attr('src', that.isZan(content.user))
+			$('.video-video').attr('src', content.video_url);
+			$('.news-title').text(content.title);
+			$('.source').text(content.source);
+			$('.groom').text(content.groom);
 			that.feedbake();
+			
 			mui("#content").on("tap", ".infojub", function() {
 				that.clickFeedback({
 					news_id: that.params.news_id,
@@ -295,8 +322,8 @@
 				that.clickZan({
 					news_id: that.params.news_id,
 					type: 1,
-					src:src,
-					el:$(this).find('img')
+					src: src,
+					el: $(this).find('img')
 				})
 			});
 		},
@@ -318,42 +345,50 @@
 				}
 			});
 		},
-		clickZan:function(option){  //文章 和 评论点赞  
+		clickZan: function(option) { //文章 和 评论点赞  
 			var that = this;
 			var status = option.src == "/resource/front/img/赞.png" ? 1 : 0;
 			var data = {
-				user_id:that.params.uid,
+				user_id: that.params.uid,
 				type: option.type || 1,
-				status:status
+				status: status,
 			};
-			option.type == 1 ? data.news_id = option.news_id : data.comment_id = option.news_id;
+			option.type == 1 ? data.video_id = option.news_id : data.comment_id = option.news_id;
+			option.type == 1 ? "" : data.video_id = that.params.news_id;
+
 			util.doAjax({
-				url: "/api/Newsdetail/groom",
+				url: "/api/video/groom",
 				method: "post",
 				data: data,
 				success: function(res) {
-					if(res.status == 'success'){
+					if(res.status == 'success') {
 						//切换图标
-						$(option.el).attr("src",that.showZanImg(status == 0 ? 2 : 1));
+						$(option.el).attr("src", that.showZanImg(status == 0 ? 2 : 1));
 						$(option.el).next().text(res.data);
 					}
 				}
 			});
 		},
-		
+
 		feedbakeList: function(page) { //评论列表
 
 			var that = this;
 			util.doAjax({
-				url: "/api/Newsdetail/comment",
-				method: "get",
+				url: "/api/video/comment",
+				method: "post",
 				data: {
-					news_id: that.params.news_id,
+					user_id: that.params.uid,
+					video_id: that.params.news_id,
 					page: page ? page : that.pageList.page,
 					limit: that.pageList.limit
 				},
 				success: function(res) {
 					//刷新评论数量大于0时    page加1
+					if(that.pageList.page == 1 && res.data.data.length != 0){
+						$('.feed-back').html("<div style=' text-align: center; margin-top: .4rem; font-size: .28rem; color: #333;'>---暂无评论---</div>")
+						mui.toast("暂无评论");
+						return false;
+					}
 					if(res.data.data.length == 0) {
 						mui.toast("已显示全部内容");
 						setTimeout(function() {
@@ -375,7 +410,7 @@
 							<div class="review-right">
 								<div class="review-name-wrap">
 									<div>${content[i].nickname}</div>
-									<div><span class="review-zan"><img src="${that.isZan(content[i].user)}" alt=""><span detail="groom">${content[i].groom}</span></span></div>
+									<div><span class="review-zan"><img src="${that.isZan(content[i].groom_user)}" alt=""><span detail="groom">${content[i].groom}</span></span></div>
 								</div>
 								<div class="review-con">
 								${content[i].contents}
@@ -392,45 +427,28 @@
 			setTimeout(function() {
 				mui('#content').pullRefresh().endPullupToRefresh();
 			}, 1000)
-			mui("#content").on("tap", ".jub", function() {
-				var id = $(this).parents('.review-wrap').attr('data-id');
-				that.clickFeedback({
-					news_id: id,
-					type: 2
-				})
-			});
-			
-			mui("#content").on("tap", ".review-zan", function() {
-				var src = $(this).find('img').attr('src');
-				var id = $(this).parents('.review-wrap').attr('data-id');
-				that.clickZan({
-					news_id:id,
-					type: 2,
-					src:src,
-					el:$(this).find('img')
-				})
-			});
 
 		},
-		showZanImg:function(clickOption){
+		showZanImg: function(clickOption) {
 			console.log(clickOption)
-			if(clickOption == 1){
+			if(clickOption == 1) {
 				return "/resource/front/img/iszan.png"
 			}
 			return "/resource/front/img/赞.png"
 		},
-		isZan:function(zanArr,clickOption){
+		isZan: function(zanArr, clickOption) {
+
 			///resource/front/img/赞.png
-			var that = this; 
+			var that = this;
 			//显示点赞图标
 			if(!that.params.uid)
 				return "/resource/front/img/赞.png";
-			if(zanArr.indexOf(parseInt(that.params.uid)) != -1){
+			if(zanArr == parseInt(that.params.uid)) {
 				return "/resource/front/img/iszan.png";
-			}else{
+			} else {
 				return "/resource/front/img/赞.png";
 			}
-			
+
 		},
 		feedbake: function() { //评论
 			var that = this;
@@ -448,12 +466,12 @@
 					return false;
 				}
 				util.doAjax({
-					url: "/api/Newsdetail/write_comment",
+					url: "/api/video/writeComment",
 					method: "post",
 					data: {
-						news_id: that.params.news_id,
+						video_id: that.params.news_id,
 						user_id: that.params.uid,
-						comment: comment
+						content: comment
 					},
 					success: function(res) {
 						that.pageList.page = 1;
@@ -467,24 +485,29 @@
 
 		},
 		handClickAd: function() { //点击广告加钱
-			
+
 		},
 		addmoney: function(time) { //canvas  加币
 			var that = this;
 			var timeArr = [10, 20, 30];
-			if(timeArr.indexOf(time) == -1){
+			if(timeArr.indexOf(time) == -1) {
 				return false;
 			}
 			var data = {
-				seconds:timeArr[timeArr.indexOf(time)],
-				news_id: that.params.news_id,
-				imei:that.params.equipment
+				seconds: timeArr[timeArr.indexOf(time)],
+				video_id: that.params.news_id,
+				imei: that.params.equipment
 			}
-			if(that.params.uid){
+			if(that.params.uid) {
 				data.user_id = that.params.uid
 			}
+			if(that.params.equipment && !that.params.uid) {
+				data.type = 2
+			} else if(that.params.equipment && that.params.uid) {
+				data.type = 1
+			}
 			util.doAjax({
-				url: "/api/Newsdetail/get_coins",
+				url: "/api/video/getCoins",
 				method: "post",
 				data: data,
 				success: function(res) {

@@ -1,0 +1,182 @@
+{% include 'front/header1.html' %}
+<style type="text/css">
+	body{
+		height: 100%;
+	}
+	.mui-input-group .mui-input-row {
+		height:1.466666rem !important;
+		display: flex;
+		align-items: center;
+		flex-flow: row;
+		margin-bottom: 0.133333rem;
+		background: #fff;
+	}
+	
+	.mui-input-group {
+		background: none;
+	}
+	.mui-input-row label{
+font-size: 0.373333rem;
+	}
+	.mui-input-row input{
+		text-align: right;
+		font-size: 0.373333rem;
+	}
+	
+	.mui-input-row:after {
+		background: transparent !important;
+	}
+	
+	.for-bottom {
+		padding-top: 0.32rem;
+		color: #999;
+		padding: 0.32rem 0.426666rem;
+		font-size: 0.346666rem;
+	}
+	
+	.for-bottom .btn {
+		background: #fee151;
+		height: 1.466666rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		border-radius: 0.08rem;
+		font-size: 0.48rem;
+		margin-top: 1.173333rem;
+	}
+	
+	select {
+		direction: rtl;
+	}
+	option {
+		direction: ltr;
+		/*text-align: right !important;*/
+		padding-left: 20px;
+	}
+	.weui-dialog{
+		position: fixed;
+    z-index: 5000;
+    width: 80%;
+    max-width: 300px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    text-align: center;
+    border-radius: 3px;
+    overflow: hidden;
+	}
+</style>
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">添加银行卡</h1>
+</header>
+<div class="content">
+	<form class="mui-input-group" id="form">
+		<div class="mui-input-row">
+			<label>姓名</label>
+			<input type="text" field="name" required="true" placeholder="请输入真实姓名">
+		</div>
+		<div class="mui-input-row">
+			<label>卡号</label>
+			<input type="text"  field="card_num" required="true" placeholder="请输入银行卡号">
+		</div>
+		<div class="mui-input-row">
+			<label>卡户行</label>
+			<select class="mui-btn-block" required="true" field="bank_code" id="cardList">
+				<!--<option value="item-1">工商银行</option>-->
+			</select>
+			<img src="/resource/front/images/forward/sanjiao.png" style="margin-right: 0.48rem; width: 0.4rem; margin-left: 0.373333rem;" />
+		</div>
+		<div class="mui-input-row">
+			<label>身份证号：</label>
+			<input type="text"  field="idcard" required="true" placeholder="请输入身份证号">
+		</div>
+	</form>
+
+	<div class="for-bottom">
+		<div class="btn" id="next">
+			下一步
+		</div>
+	</div>
+
+	<div class="js_dialog" style="opacity: 1; display: none;">
+		<div class="weui-mask"></div>
+	</div>
+	<div class="dialog-box" style="display: none; opacity: 1; height: 4.706666rem;">
+		<img class="close" src="/resource/front/images/forward/delete.png" />
+		<div class="weui-dialog">
+			<p style=" font-size: 0.4rem; color: #333;">您的银行卡信息填写错误或是卡号不存在</p>
+			<div class="btn" style="margin-top: 0.906666rem;" id="cancle">
+				取消绑卡
+			</div>
+		</div>
+	</div>
+</div>
+{% include 'front/foot.html' %}
+<script>
+	mui.ready(function() {
+		this.initCardList();
+		this.next();   //下一步
+		this.cancle();
+		this.close();
+	})
+	function close() {
+		$('.close').click(function(){
+			$('.js_dialog').hide();
+			$('.dialog-box').hide();
+		})
+	}
+	function cancle(){
+		$('#cancle').click(function(){
+			window.history.go(-1)
+		})
+	}
+	
+	function next() {
+		$('#next').click(function(){
+			var data = util.getFormCode({el:"#form"});
+			if(!data){
+				return false;
+			}
+			data.mobile = util.getLocalStorage("code");
+			if(!(/([\d]{4})([\d]{4})([\d]{4})([\d]{4})([\d]{0,})?/.test(data.card_num))){
+				mui.toast("请输入正确格式的银行卡号");
+				return false;
+			}
+			util.doAjax({
+				url:"/api/user/addcard_one",
+				method:"post",
+				data:data,
+				success:function(res){
+					if(res.status == 'success'){
+						var data = res.data;
+						window.location.href = 'addphone?id='+data.id
+					}else{
+						$('.js_dialog').show();
+						$('.dialog-box').show();
+					}
+				}
+				
+			})
+		})
+		
+	}
+	
+	function initCardList(){
+		util.doAjax({
+			url:"/api/user/bank_list",
+			method:"post",
+			success:function(res){
+				var data = res.data;
+				var html = "";
+				for(var i in data){
+					html += "<option value="+data[i].bank_code+">"+data[i].bank_name+"</option>"
+				}
+				$("#cardList").html(html);
+			}
+		})
+	}
+</script>

@@ -1,0 +1,407 @@
+{% include 'front/header1.html' %}
+<!--<script type="text/javascript" src="/resource/front/css/mobile/size.js"></script>-->
+<style>
+	html,body{
+		height: 100%;
+	}
+	.mui-bar-nav{
+		transition: .3s linear;
+	}
+	.content{
+		height: 100% !important;
+		background: #fff;
+	}
+	.for-con {
+		display: flex;
+		padding-left: 0.506666rem;
+		justify-content: space-between;
+		flex-flow: column;
+		width: 100%;
+		height:2.16rem;
+		background: #fff;
+		box-shadow: 0px 0px 10px 0px rgba(0,0,0,.14);
+	}
+	
+	.cur-title{
+		margin: 0.4rem;
+		margin-left: 0;
+		font-size: 0.32rem;
+		color: #333;
+	}
+	.padding-38{
+		padding-left: 0.506666rem;
+	}
+	.for-tip-title{
+		margin-top: 0.4rem;
+		font-size: 0.373333rem;
+		color: #333;
+	}
+	.for-money {
+		color: #ce3e3f;
+		text-align: center;
+	}
+	.cur-money{
+		margin-bottom: 0.4rem;
+		font-size: 0.64rem;
+		color: #333;
+		margin-top: 0;
+	}
+	
+	.money {
+		font-size: 0.56rem;
+		margin-top: 0.32rem;
+	}
+	
+	.card-list{
+		margin: 0.4rem 0.746666rem;
+	}
+	.card-item{
+		width: 3.72rem;
+		height: 1.186666rem;
+		background: #fff;
+		box-shadow: 0 0 10px 0 rgba(0,0,0,.14);
+		font-size: 0.32rem;
+		display: flex;
+	    align-items: center;
+	    justify-content: space-around;
+	}
+	.card-item img{
+		height: 40px;
+		height: 24px;
+	}
+	.card-item span{
+		margin-left: .1rem;
+	}
+	.card-active{
+		position: relative;
+	}
+	.card-active:before{
+		content: "";
+		width: 0.32rem;
+		height: 0.533333rem;
+		display: inline-block;
+		margin-left: 0.133333rem;
+		background-image: url(/resource/front/images/forward/yes.png);		
+		background-repeat:no-repeat;
+		 background-size: contain;
+		 margin-top: -.1rem;
+	}
+	.title {
+		font-size: 0.346666rem;
+		margin-top: 0.186666rem;
+		margin-bottom: 0.4rem;
+	}
+	.invitation1{
+		color: #2c6fad;
+		font-size: 0.4rem;
+		margin-bottom: 0.506666rem;
+	}
+	.invitation{
+		color: #2c6fad;
+		font-size: 0.4rem;
+		
+	}
+	
+	.for-bottom {
+		padding-top: 0.32rem;
+		color: #999;
+		padding: 0.32rem 0.426666rem;
+		font-size: 0.346666rem;
+	}
+	
+	.for-bottom p {
+		margin-bottom: 0.613333rem;
+	}
+	
+	.for-bottom .btn {
+		background: #fee151;
+		height: 1.333333rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		border-radius: 0.08rem;
+		font-size: 0.48rem;
+	}
+	
+	.weui-dialog .btn {
+		width: 5.333333rem;
+		background: #fee151;
+		height: 1.066666rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		border-radius: 0.08rem;
+		font-size: 0.48rem;
+		margin: auto;
+		margin-top: .6rem;
+	}
+	
+	.weui-dialog {
+		font-size: 0.426666rem;
+		width: 8.346666rem;
+	}
+	
+	.dialog-title {
+		text-align: center;
+		margin-top: 0.586666rem;
+		margin-bottom: 0.8rem;
+		color: #333;
+		font-size: 0.48rem;
+	}
+	
+	.weui-cells {
+		margin-top: 0;
+		margin: auto;
+		width: 5.333333rem;
+	}
+	
+	.weui-dialog input {
+		text-align: center;
+		margin-bottom: 0.266666rem;
+		color: #999;
+		border: 0;
+		font-size: 0.4rem;
+		height: 22px;
+	}
+	
+	.weui-cell__bd:after {
+		content: "";
+		position: absolute;
+		bottom: 1;
+		left: 0;
+		width: 100%;
+		height: 0.026666rem;
+		background: #b5b5b5;
+	}
+	
+	.forget-pwd {
+		text-align: right;
+		font-size: 0.346666rem;
+		color: #17b0f1;
+		margin-top: 0.4rem;
+		margin-bottom: 0;
+		width: 100%;
+		display: inline-block;
+	}
+	
+	.weui-cell__bd:after {
+		background: transparent !important;
+	}
+	
+	.weui-cell__bd {
+		border-bottom: 0.026666rem solid #B5B5B5;
+	}
+	/*.close {
+		top: -0.266666rem;
+	}*/
+	
+	.alert-img-box {
+		position: relative;
+	}
+	
+	.dialog-box {
+		height: 6.533333rem;
+	}
+	.mui-btn-blue:enabled:active{
+		border: none !important;
+	}
+	.weui-mask{
+		z-index: 1000;
+	    top: 0;
+	    right: 0;
+	    left: 0;
+	    bottom: 0;
+	    background: rgba(0, 0, 0, 0.6);
+
+	}
+</style>
+<script>
+	if(!document.querySelector('.dataTables_processing')) {
+		var div = document.createElement("div");
+		var msg = '';
+		var html = '<div class="dataTables_processing" id="onProcess" style="z-index:5001">' + '<div  class="note-success" style="padding: 14px 15px;border-radius: 10px;display: flex;align-items: center;">' + '<img  style="top:-1px;display: inline-block; position:relative" src="/resource/front/images/forward/load.png" class="rotate"/>' + '<span style="font-size:14px;">' + msg + '</div>' + '</div>'
+		div.innerHTML = html; //html
+		document.getElementsByTagName('body')[0].append(div);
+	}
+</script>
+<header class="mui-bar mui-bar-nav">
+	<a class=" mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+	<h1 class="mui-title">我要提现</h1>
+	<!--<a class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" href="forwardlist" id="" style="line-height: 53px;">
+		<img src="/resource/front/images/forward/tiixianjilu.png"  style="width: 0.453333rem;"/>
+	</a>-->
+</header>
+<div class="content">
+	<div class="for-con">
+		<p class="cur-title" style="margin-bottom: 0;">当前余额</p>
+		<p class="cur-money money"></p>
+	</div>
+	<div class="">
+		<p class="padding-38 for-tip-title">提现方式</p>
+		<div class="card-list">
+			<div class="card-item card-active">
+				<img src="/resource/front/images/forward/card.png" />
+				<span>银行卡</span>
+			</div>
+		</div>
+	</div>
+	<div class="for-bottom">
+		<p class="tip-hearder">注意事项</p>
+		<!--<p class="tip-content">1. 提现申请将在1-3小时内申请， 如在进度内...</p>
+		<p class="tip-content">2. 提现申请将在1-3小时内申请， 如在进度内...</p>-->
+		<p>当日最高提现金额<span id="maxMoney"></span>元，最低提现金额<span id="minMoney"></span>元，提现每1元人民币收取<span id="extract_poundage"></span>%手续费</p>
+		<div class="btn" id="btn">
+			立即提现
+		</div>
+	</div>
+	<div class="js_dialog" style="opacity: 1; display: none;">
+		<div class="weui-mask"></div>
+	</div>
+
+	<div class="dialog-box" style="display: none; opacity: 1;">
+		<img class="close" src="/resource/front/images/forward/delete.png" />
+		<div class="weui-dialog">
+			<p class="dialog-title">输入登录密码</p>
+			<div class="weui-cells weui-cells_form" id="form">
+				<div class="weui-cell weui-cell_warn">
+					<div class="weui-cell__bd">
+						<input type="password" field="pwd" required="true" errmsg="请输入密码" class="weui-input" type="number" placeholder="请输入您的登录密码">
+					</div>
+				</div>
+				<a href="forgetpwd" class="forget-pwd">忘记密码</a>
+			</div>
+
+			<div class="btn" id="tx">
+				完成
+			</div>
+		</div>
+	</div>
+
+</div>
+{% include 'front/foot.html' %}
+<script>
+	mui.ready(function() {
+		util.setLocalStorage('code', util.getUrlParam('uid'));
+		util.setLocalStorage('forwardTwo', "forwardTwo");
+		this.params = util.GetRequest(); //获取传参
+		util.setLocalStorage('token', this.params.token)
+		this.init();
+		$("#btn").click(function() {
+			$('.js_dialog').show();
+			$('.dialog-box').show();
+		})
+
+		$('.close').on('click', function() {
+			$('.js_dialog').hide();
+			$('.dialog-box').hide();
+		})
+		
+	});
+
+	$('#back').click(function() {
+		if(mui.os.ios || (mui.os.android && parseFloat(mui.os.version) < 4.4)) {
+			goback();
+		} else {
+			window.android.back();
+		}
+	})
+	
+	
+	
+	function init() {
+		util.getUrlParam('uid') ? this.getUserMoney() : this.getUserinfo(); //账户登录  /  手机登录
+		this.goForget();
+		this.goTx();
+		var div = document.createElement("div");
+		var html = '<div class="dataTables_processing" id="onProcess" style="z-index:1100"><div  class="note-success" style="padding: 14px 15px;border-radius: 10px;display: flex;align-items: center;">' + '<img  style="top:-1px;display: inline-block; position:relative" src="/resource/front/images/forward/load.png" class="rotate"/></div>'
+		div.innerHTML = html; //html
+		//          div.setAttribute('id','mark');
+		var Fun = function() {};
+		Fun = function() {
+			$('body').append(div);
+		};
+	}
+	
+	function initCardList() {
+		var that = this;
+		util.doAjax({
+			url: "/api/user/bank_list",
+			method: "post",
+			data: {
+				uid: util.getUrlParam('uid')
+			},
+			success: function(res) {
+				var data = res.data.list;
+				$('#minMoney').text(parseInt(res.money.min[0].task_reward));
+				$('#maxMoney').text(parseInt(res.money.max[0].task_reward));
+				$('#extract_poundage').text(res.money.bill[0].task_reward *100);
+			}
+		})
+	}
+
+	function goTx() {
+		$("#tx").click(function() {
+			var data = util.getFormCode({
+				el: "#form"
+			});
+			data.mobile = util.getLocalStorage('code');
+			data.token = util.getLocalStorage('token');
+			util.doAjax({
+				url: "/api/user/check_pwd",
+				method: "post",
+				data: data,
+				success: function(res) {
+					if(res.status == 'error') {
+						mui.toast("输入正确的密码");
+						return false;
+					}
+					mui.openWindow({
+						url: 'forwardThree',
+						id: 'forwardThree'
+					});
+				}
+			})
+		})
+	}
+
+	function goForget() {
+		$('.forget-pwd').on('click', function() {
+			util.loading();
+			mui.openWindow({
+				url: 'forgetpwd',
+				id: 'forgetpwd'
+			});
+		})
+	}
+
+	function getUserMoney() {
+		var that = this;
+		util.doAjax({
+			url: "/api/user/get_rmb",
+			method: "post",
+			data: {
+				user_code: util.getUrlParam('uid')
+			},
+			success: function(res) {
+				util.setLocalStorage('uid', res.data);
+				$('.money').text(res.data + "元");
+				if(res.data.user_type ==2){
+					$('.invitation').text(res.data.invitation);
+				}else{
+					$('.invitation1').remove()
+				}
+				
+				util.setLocalStorage('usermoney', res.data);
+				that.initCardList();
+			}
+		})
+	}
+
+	function getUserinfo() {
+		var that = that;
+//		that.initCardList();
+		return "";
+	}
+</script>

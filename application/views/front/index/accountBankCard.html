@@ -1,0 +1,179 @@
+{% include 'front/header1.html' %}
+<style type="text/css">
+	
+	.mui-input-group .mui-input-row {
+		height: 1.466666rem !important;
+		display: flex;
+		align-items: center;
+		flex-flow: row;
+		margin-bottom: 0.266666rem;
+		background: #fff;
+		justify-content: space-between;
+	}
+	
+	.mui-input-group {
+		background: none;
+	}
+	
+	.mui-input-row:after {
+		background: transparent !important;
+	}
+	
+	.for-bottom {
+		padding-top: 0.853333rem;
+		color: #999;
+		padding: 0.32rem 0.426666rem;
+		font-size: 0.346666rem;
+	}
+	
+	.for-bottom .btn {
+		background: #fee151;
+		height: 1.333333rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		border-radius: 0.08rem;
+		font-size: 0.48rem;
+		margin-top: 1.173333rem;
+	}
+	
+	.mui-input-row {
+		height: 2rem;
+	}
+	
+	.mui-input-row label {
+		margin-top: 0.48rem;
+		padding-left: 0.48rem;
+		width: auto;
+		margin-right: 0.48rem;
+	}
+	
+	.mui-input-row label p {
+		margin-top: 0.213333rem;
+	}
+	
+	.account-title {
+		padding-left: 0.453333rem;
+		font-size: 0.346666rem;
+		color: #666;
+		height: 0.986666rem;
+		line-height: 0.986666rem;
+	}
+	
+	.mui-input-row img {
+		margin-right: 0.48rem;
+		width: 0.48rem;
+	}
+	.mui-input-row label {
+		font-size: 0.373333rem
+	}
+	/*#cardList{
+		min-height: 11;
+	}*/
+</style>
+<header class="mui-bar mui-bar-nav">
+	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	<h1 class="mui-title">选择银行卡</h1>
+</header>
+<div class="content">
+	<div class="account-title">到账银行卡</div>
+	<form class="mui-input-group" id="cardList">
+		<!--<div class="mui-input-row">
+			<label>
+				工商银行卡（4459）
+				<p id="">
+				提现手续费</p>
+			</label>
+			<img src="/resource/front/images/forward/Correct.png" />
+		</div>
+		<div class="mui-input-row">
+			<label>
+				工商银行卡（4459）
+				<p id="">
+				提现手续费</p>
+			</label>
+			<img src="/resource/front/images/forward/Correct.png" />
+		</div>-->
+	</form>
+
+	<div class="for-bottom">
+		<div class="btn">
+			提现
+		</div>
+	</div>
+</div>
+{% include 'front/foot.html' %}
+<script>
+	mui.ready(function() {
+		this.init()
+	})
+	function init() {
+		this.getCardList(); //初始化银行卡
+		this.submit();  //提交默认银行卡
+	}
+	function submit(){
+		$('.btn').click(function(){
+			var id = "";
+			$(".mui-input-row").each(function(){
+				if($(this).attr('select') == 'true'){
+					id = $(this).attr('data-id');
+				}
+			})
+			if(!id){
+				mui.toast("请选择银行卡设置");
+				return false;
+			}
+			util.doAjax({
+				url: "/api/user/set_default",
+				method: "post",
+				data: {
+					mobile: util.getLocalStorage("code"),
+					card_id:id
+				},
+				success: function(res) {
+					mui.toast("设置成功");
+					setTimeout(function(){
+						window.location.href = "forwardThree"
+					},500)
+				}
+			})
+		})
+	}
+	
+	function changeCard(){
+		$(".mui-input-row").on('click',function(){
+			$(this).attr("select",true).find('img').show();
+			$(this).siblings().attr("select",false).find('img').hide();
+		})
+	}
+
+	function getCardList() {
+		var that = this;
+		util.doAjax({
+			url: "/api/user/usercard_list",
+			method: "post",
+			data: {
+				mobile: util.getLocalStorage("code")
+			},
+			success: function(res) {
+				var data = res.data.list;
+				var html = "";
+				for(var i in data){
+					html += `<div class="mui-input-row" data-id='${data[i].id}'>
+						<label>
+							${data[i].bank_name}
+							<p id="">提现手续费</p>
+						</label>
+						<img src="/resource/front/images/forward/Correct.png" style="display:${data[i].default == 1 ? 'inline-block' :'none'};" />
+					</div>`;
+				}
+				$('#cardList').html(html);
+				that.changeCard();
+			}
+		})
+		
+		
+
+	}
+</script>

@@ -1,0 +1,25 @@
+{% include 'front/header.html' %}
+<link rel="stylesheet" href="/resource/front/css/invite.css" />
+</head>
+<body style=" margin: 0 auto;">
+  <div class="invite-wrap">
+    <img id="bg" src="/resource/front/img/hy.png" alt="">
+    <div class="inv-bottom">
+        <div id="qrcode"></div>
+        <div>长按二维码看资讯赚钱可提现哦！！！</div>
+    </div>
+  </div>
+
+</body>
+<script src="/resource/front/js/qrcode.min.js"></script>
+</html>
+{% include 'front/foot.html' %}
+
+<script>
+defineClass('init', {
+		init: function() {
+			var it = this;
+			new QRCode(document.getElementById('qrcode'), 'your content');
+		}
+})
+</script>

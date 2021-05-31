@@ -1,0 +1,66 @@
+
+.invite-wrap{
+    width: 7.5rem;
+    position: absolute;
+    
+}
+.invite-wrap #bg{
+    width: 7.5rem;
+    width: 100%;
+}
+.inv-bottom{
+    display: flex;
+    padding: 0 .34rem;
+    position: absolute;
+    bottom: .79rem;
+    align-items: center;
+    height: 1.34rem;
+}
+.inv-bottom div:nth-child(1) canvas,.inv-bottom div:nth-child(1) img{
+    width: 1.34rem;
+    height: 1.34rem;
+    margin-left: 1.29rem;
+}
+.inv-bottom div:nth-child(2){
+    font-size: .24rem;
+    color: #333;
+    margin-left: .6rem;
+    margin-right: 1.13rem;
+    text-align: center;
+}
+.inv-f-bottom{
+    display: flex;
+    padding: 0 .34rem;
+    position: absolute;
+    bottom: 1.44rem;
+    align-items: center;
+    /* height: 1.34rem; */
+}
+
+.inv-f-bottom div:nth-child(1) canvas,.inv-f-bottom div:nth-child(1) img{
+    width: 1.34rem;
+    height: 1.34rem;
+    margin-right: .53rem;
+    margin-left: .35rem;
+}
+.inv-f-bottom div:nth-child(2) img{
+    width: 4.31rem;
+    height: .99rem;
+}
+body{
+    width: 7.5rem;
+    /* overflow: hidden; */
+}
+.inv-f-bottom-text{
+    width: 4.69rem;
+    height: .6rem;
+    margin: 0 auto;
+    position: absolute;
+    bottom: .5rem;
+    left: 0;
+    right: 0;
+}
+.inv-f-bottom-text img{
+    width: 4.69rem;
+    height: .6rem;
+}

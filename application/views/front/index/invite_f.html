@@ -1,0 +1,28 @@
+{% include 'front/header.html' %}
+<link rel="stylesheet" href="/resource/front/css/invite.css" />
+</head>
+<body style=" margin: 0 auto;">
+  <div class="invite-wrap">
+    <img id="bg" src="/resource/front/img/mdm.png" alt="">
+    <div class="inv-f-bottom">
+        <div id="qrcode"></div>
+        <div><img src="/resource/front/img/06282.png" alt=""></div>
+    </div>
+    <div class="inv-f-bottom-text">
+      <img src="/resource/front/img/06283.png" alt="">
+    </div>
+  </div>
+
+</body>
+</html>
+<script src="/resource/front/js/qrcode.min.js"></script>
+{% include 'front/foot.html' %}
+
+<script>
+defineClass('init', {
+		init: function() {
+			var it = this;
+			new QRCode(document.getElementById('qrcode'), 'your content');
+		}
+})
+</script>
