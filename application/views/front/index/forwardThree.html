@@ -315,19 +315,19 @@
 	function forward() {
 		$('.btn').click(function() {
 			var lastMoney = $('#lastmoney').text();
-//			if(!lastMoney) {
-//				mui.toast("请输入提现金额再提现");
-//				console.log(1)
-//				return false;
-//			}
-//			if(!$("#card").attr('code')){
-//				mui.toast('您还没有添加银行卡');
-//					return false;
-//			}
-//			if($(".weui-input").val() > parseInt(util.getLocalStorage('usermoney'))){
-//				mui.toast('您的余额为'+parseInt(util.getLocalStorage('usermoney'))+",您不能提现");
-//				return false;
-//			}
+			if(!lastMoney) {
+				mui.toast("请输入提现金额再提现");
+				console.log(1)
+				return false;
+			}
+			if(!$("#card").attr('code')){
+				mui.toast('您还没有添加银行卡');
+					return false;
+			}
+			if($(".weui-input").val() > parseInt(util.getLocalStorage('usermoney'))){
+				mui.toast('您的余额为'+parseInt(util.getLocalStorage('usermoney'))+",您不能提现");
+				return false;
+			}
 			if($('#lastmoney').text() > parseInt($('#maxMoney').text())){
 				mui.toast("最高提现金额"+$('#maxMoney').text())
 				return false;
@@ -346,16 +346,16 @@
 					lcb_money:$('.weui-input').val() * 100
 				},
 				success: function(res) {
-					if(res.code == "200"){
+					if(res.status == "success"){
 						mui.toast("提现成功!");
-						$('#lastmoney').val("");
+						$('#lastmoney').text("");
 						setTimeout(function() {
-							util.setLocalStorage('usermoney',res.data.earn);
+							util.setLocalStorage('usermoney',parseInt(res.data.data.earn) / 100);
 							window.history.go(-1);
-//							window.location.href = 'givedetails?id=' + res.data.id;
 						}, 500)
 					}else{
 						mui.toast(res.msg);
+						
 					}
 				}
 			})

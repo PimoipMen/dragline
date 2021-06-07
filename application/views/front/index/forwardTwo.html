@@ -287,7 +287,16 @@
 		util.setLocalStorage('forwardTwo', "forwardTwo");
 		this.params = util.GetRequest(); //获取传参
 		util.setLocalStorage('token', this.params.token)
+		if(util.getLocalStorage('usermoney')){
+			$('.money').text(util.getLocalStorage('usermoney') + "元");
+			util.setLocalStorage('usermoney', util.getLocalStorage('usermoney'));
+		}else{
+			$('.money').text(util.getUrlParam('money') + "元");
+			util.setLocalStorage('usermoney', util.getUrlParam('money'));
+		}
+		
 		this.init();
+		
 		$("#btn").click(function() {
 			$('.js_dialog').show();
 			$('.dialog-box').show();
@@ -311,7 +320,8 @@
 	
 	
 	function init() {
-		util.getUrlParam('uid') ? this.getUserMoney() : this.getUserinfo(); //账户登录  /  手机登录
+//		util.getUrlParam('uid') ? this.getUserMoney() : this.getUserinfo(); //账户登录  /  手机登录
+		this.initCardList();
 		this.goForget();
 		this.goTx();
 		var div = document.createElement("div");
@@ -376,28 +386,28 @@
 		})
 	}
 
-	function getUserMoney() {
-		var that = this;
-		util.doAjax({
-			url: "/api/user/get_rmb",
-			method: "post",
-			data: {
-				user_code: util.getUrlParam('uid')
-			},
-			success: function(res) {
-				util.setLocalStorage('uid', res.data);
-				$('.money').text(res.data + "元");
-				if(res.data.user_type ==2){
-					$('.invitation').text(res.data.invitation);
-				}else{
-					$('.invitation1').remove()
-				}
-				
-				util.setLocalStorage('usermoney', res.data);
-				that.initCardList();
-			}
-		})
-	}
+//	function getUserMoney() {
+//		var that = this;
+//		util.doAjax({
+//			url: "/api/user/get_rmb",
+//			method: "post",
+//			data: {
+//				user_code: util.getUrlParam('uid')
+//			},
+//			success: function(res) {
+//				util.setLocalStorage('uid', res.data);
+//				$('.money').text(res.data + "元");
+//				if(res.data.user_type ==2){
+//					$('.invitation').text(res.data.invitation);
+//				}else{
+//					$('.invitation1').remove()
+//				}
+//				
+//				util.setLocalStorage('usermoney', res.data);
+//				
+//			}
+//		})
+//	}
 
 	function getUserinfo() {
 		var that = that;
